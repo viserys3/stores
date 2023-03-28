@@ -10,5 +10,6 @@ public class StoresApplication {
 
 		SpringApplication.run(StoresApplication.class, args);
 		System.out.println("Hello World");
+		System.out.println("Checking if push to git works");
 	}
 }
