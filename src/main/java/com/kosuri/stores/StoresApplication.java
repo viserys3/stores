@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class StoresApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(StoresApplication.class, args);
 		System.out.println("Hello World");
-		System.out.println("Just checking if project to origin syncs");
 	}
 }
