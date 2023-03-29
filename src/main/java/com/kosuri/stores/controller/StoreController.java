@@ -5,6 +5,7 @@ import java.net.URI;
 import com.kosuri.stores.handler.StoreHandler;
 import com.kosuri.stores.model.request.CreateStoreRequest;
 import com.kosuri.stores.model.response.CreateStoreResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans
         .factory.annotation.Autowired;
 import org.springframework.http
@@ -27,7 +28,7 @@ public class StoreController {
     @Autowired
     private StoreHandler storeHandler;
     @PostMapping("/create")
-    CreateStoreResponse createStore(CreateStoreRequest request){
+    CreateStoreResponse createStore(@Valid @RequestBody CreateStoreRequest request){
         //TODO add call to handler here once logic is ready
         CreateStoreResponse createStoreResponse = new CreateStoreResponse();
 

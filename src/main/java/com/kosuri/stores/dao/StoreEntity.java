@@ -18,7 +18,7 @@ public class StoreEntity {
     private @Column(name = "Contact_Person_Name") String owner;
     private @Column(name = "Phone_Number") String ownerContact;
     private @Column(name = "Secondary_Phone") String secondaryContact;
-    private @Column(name = "EmailId") String ownerEmail;
+    private @Column(name = "Emailid") String ownerEmail;
     private @Column(name = "Reg_Date") String registrationDate;
     private @Column(name = "Time_Stamp") String creationTimeStamp;
     private @Column(name = "Role") String role;

@@ -2,18 +2,30 @@ package com.kosuri.stores.model.request;
 
 import com.kosuri.stores.model.enums.StoreType;
 
+import jakarta.validation.constraints.NotNull;
+import org.springframework.lang.NonNull;
+
 public class CreateStoreRequest {
+    @NotNull
     private String type;
     private int id;
+    @NotNull
     private String name;
+    @NotNull
     private String pincode;
+    @NotNull
     private String district;
     private String town;
+    @NotNull
     private String state;
+    @NotNull
     private String owner;
     private String ownerAddress;
+    @NotNull
     private String onwerContact;
+    @NonNull
     private String secondaryContact;
+    @NonNull
     private String ownerEmail;
 
     public String getType() {
