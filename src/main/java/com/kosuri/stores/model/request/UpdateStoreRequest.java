@@ -2,7 +2,7 @@ package com.kosuri.stores.model.request;
 
 import jakarta.validation.constraints.NotNull;
 
-public class CreateStoreRequest {
+public class UpdateStoreRequest {
     @NotNull
     private String type;
     private int id;
