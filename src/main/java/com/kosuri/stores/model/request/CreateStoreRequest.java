@@ -22,7 +22,7 @@ public class CreateStoreRequest {
     private String owner;
     private String ownerAddress;
     @NotNull
-    private String onwerContact;
+    private String ownerContact;
     @NonNull
     private String secondaryContact;
     @NonNull
@@ -100,12 +100,12 @@ public class CreateStoreRequest {
         this.ownerAddress = ownerAddress;
     }
 
-    public String getOnwerContact() {
-        return onwerContact;
+    public String getOwnerContact() {
+        return ownerContact;
     }
 
-    public void setOnwerContact(String onwerContact) {
-        this.onwerContact = onwerContact;
+    public void setOwnerContact(String ownerContact) {
+        this.ownerContact = ownerContact;
     }
 
     public String getSecondaryContact() {

@@ -2,6 +2,7 @@ package com.kosuri.stores.handler;
 
 import com.kosuri.stores.dao.StoreEntity;
 import com.kosuri.stores.dao.StoreRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,13 @@ public class RepositoryHandler {
     @Autowired
     private StoreRepository storeRepository;
 
-    public void addStoreToRepository(StoreEntity storeEntity){
-        System.out.println("fetching repository");
+    public void addStoreToRepository(@Valid StoreEntity storeEntity){
         long stores = storeRepository.count();
-        storeRepository.save(storeEntity);
+        System.out.println("fetching repository " + stores);
+        try {
+            storeRepository.save(storeEntity);
+        }catch(Exception e){
+            System.out.println(e.getCause());
+        }
     }
 }

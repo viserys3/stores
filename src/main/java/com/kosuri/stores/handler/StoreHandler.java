@@ -23,6 +23,7 @@ public class StoreHandler {
     }
 
     private StoreEntity createStoreEntityFromRequest(CreateStoreRequest createStoreRequest){
+        //TODO add location and other fields from request instead of default values.
         StoreEntity storeEntity = new StoreEntity();
         storeEntity.setName(createStoreRequest.getName());
         storeEntity.setId(createStoreRequest.getId());
@@ -33,7 +34,7 @@ public class StoreHandler {
         storeEntity.setState(createStoreRequest.getState());
         storeEntity.setOwner(createStoreRequest.getOwner());
         storeEntity.setOwnerEmail(createStoreRequest.getOwnerEmail());
-        storeEntity.setOwnerContact(createStoreRequest.getOnwerContact());
+        storeEntity.setOwnerContact(createStoreRequest.getOwnerContact());
         storeEntity.setSecondaryContact(createStoreRequest.getSecondaryContact());
         storeEntity.setRegistrationDate(LocalDate.now().toString());
         storeEntity.setCreationTimeStamp(LocalDateTime.now().toString());
@@ -43,6 +44,8 @@ public class StoreHandler {
         storeEntity.setModifiedTimeStamp(LocalDateTime.now().toString());
         storeEntity.setStatus("OPEN");
         storeEntity.setPassword("test");
+        storeEntity.setAddedBy(createStoreRequest.getOwner());
+        storeEntity.setLocation("abcd");
 
         return storeEntity;
     }
