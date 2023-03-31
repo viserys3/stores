@@ -7,6 +7,9 @@ import com.kosuri.stores.model.response.CreateStoreResponse;
 import com.kosuri.stores.model.response.UpdateStoreResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,18 +22,18 @@ public class StoreController {
     private StoreHandler storeHandler;
 
     @PostMapping("/create")
-    CreateStoreResponse createStore(@Valid @RequestBody CreateStoreRequest request) {
+    ResponseEntity<CreateStoreResponse> createStore(@Valid @RequestBody RequestEntity<CreateStoreRequest> request) {
         CreateStoreResponse createStoreResponse = new CreateStoreResponse();
 
-        createStoreResponse.setId(storeHandler.addStore(request));
-        return createStoreResponse;
+        createStoreResponse.setId(storeHandler.addStore(request.getBody()));
+        return new ResponseEntity<> (createStoreResponse,HttpStatus.OK);
     }
 
     @PostMapping("/update")
-    UpdateStoreResponse updateStore(@Valid @RequestBody UpdateStoreRequest request) {
+    ResponseEntity<UpdateStoreResponse> updateStore(@Valid @RequestBody RequestEntity<UpdateStoreRequest> request) {
         UpdateStoreResponse updateStoreResponse = new UpdateStoreResponse();
 
-        updateStoreResponse.setId(storeHandler.updateStore(request));
-        return updateStoreResponse;
+        updateStoreResponse.setId(storeHandler.updateStore(request.getBody()));
+        return new ResponseEntity<>(updateStoreResponse, HttpStatus.OK);
     }
 }
