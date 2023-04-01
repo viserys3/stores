@@ -1,11 +1,17 @@
 package com.kosuri.stores.handler;
 
+import com.kosuri.stores.dao.PurchaseEntity;
 import com.kosuri.stores.dao.PurchaseRepository;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -27,8 +33,8 @@ public class PurchaseHandler {
             XSSFRow row = worksheet.getRow(i);
 
 
-            tempPurchase.setDoc_No((int) row.getCell(0).getNumericCellValue());
-            tempStudent.setReadableDocNo(row.getCell(1).getStringCellValue());
+            tempPurchase.setDoc_Number((long) row.getCell(0).getNumericCellValue());
+            tempPurchase.setReadableDocNo(row.getCell(1).getStringCellValue());
             tempPurchase.setDate(row.getCell(2).getStringCellValue());
             tempPurchase.setBillNo(row.getCell(3).getStringCellValue());
             tempPurchase.setBillDt(row.getCell(4).getStringCellValue());
@@ -45,7 +51,7 @@ public class PurchaseHandler {
             tempPurchase.setDcYear(row.getCell(15).getStringCellValue());
             tempPurchase.setDcPrefix(row.getCell(16).getStringCellValue());
             tempPurchase.setDcSrno(row.getCell(17).getStringCellValue());
-            tempPurchase.setQtyBox(row.getCell(18).getStringCellValue());
+            tempPurchase.setQty(row.getCell(18).getStringCellValue());
             tempPurchase.setPackQty(row.getCell(19).getStringCellValue());
             tempPurchase.setLooseQty(row.getCell(20).getStringCellValue());
             tempPurchase.setSchPackQty(row.getCell(21).getStringCellValue());
@@ -53,7 +59,7 @@ public class PurchaseHandler {
             tempPurchase.setSchDisc(row.getCell(23).getStringCellValue());
             tempPurchase.setSaleRate(row.getCell(24).getStringCellValue());
             tempPurchase.setPurRate(row.getCell(25).getStringCellValue());
-            tempPurchase.setMRP(row.getCell(26).getStringCellValue());
+            tempPurchase.setmRP(row.getCell(26).getStringCellValue());
             tempPurchase.setPurValue(row.getCell(27).getStringCellValue());
             tempPurchase.setDiscPer(row.getCell(28).getStringCellValue());
             tempPurchase.setMargin(row.getCell(29).getStringCellValue());
@@ -72,7 +78,7 @@ public class PurchaseHandler {
 
 
             tempPurchase.setTotal(row.getCell(42).getStringCellValue());
-            tempPurchase.setPost(row.getCell(43).getStringCellValue());
+            tempPurchase.setPost(((XSSFRow) row).getCell(43).getStringCellValue());
 
             long purchases = purchaseRepository.count();
             System.out.println("fetching repository " + purchases);

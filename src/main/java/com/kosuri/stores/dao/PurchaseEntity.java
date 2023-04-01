@@ -1,5 +1,12 @@
 package com.kosuri.stores.dao;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+
+@Entity
 @Table(name = "pharma_purchase_detail")
 public class PurchaseEntity{
 
@@ -106,7 +113,6 @@ public class PurchaseEntity{
     @Column(name="Cess_Amt",nullable = true, length = 45)
     private String cessAmt;
 
-
     public String getItemCat() {
         return itemCat;
     }
@@ -115,7 +121,18 @@ public class PurchaseEntity{
     public void setItemCat(String itemCat) {
         this.itemCat = itemCat;
     }
+    public void setSaleRate(String saleRate) {
+        this.SaleRate = saleRate;
+    }
 
+    public String getSaleRate(String saleRate) {
+        return this.SaleRate;
+    }
+
+
+    public void set(String itemCat) {
+        this.itemCat = itemCat;
+    }
 
     public Long getDoc_Number() {
         return doc_Number;
@@ -426,7 +443,6 @@ public class PurchaseEntity{
         this.margin = margin;
     }
 
-
     public String getSuppCode() {
         return suppCode;
     }
@@ -445,7 +461,6 @@ public class PurchaseEntity{
     public void setSuppName(String suppName) {
         this.suppName = suppName;
     }
-
 
     public String getDiscValue() {
         return discValue;
@@ -496,56 +511,45 @@ public class PurchaseEntity{
         this.sGSTPer = sGSTPer;
     }
 
-
     public String getcGSTAmt() {
         return cGSTAmt;
     }
-
 
     public void setcGSTAmt(String cGSTAmt) {
         this.cGSTAmt = cGSTAmt;
     }
 
-
     public String getsGSTAmt() {
         return sGSTAmt;
     }
-
 
     public void setsGSTAmt(String sGSTAmt) {
         this.sGSTAmt = sGSTAmt;
     }
 
-
     public String getiGSTPer() {
         return iGSTPer;
     }
-
 
     public void setiGSTPer(String iGSTPer) {
         this.iGSTPer = iGSTPer;
     }
 
-
     public String getTotal() {
         return total;
     }
-
 
     public void setTotal(String total) {
         this.total = total;
     }
 
-
     public String getPost() {
         return post;
     }
 
-
     public void setPost(String post) {
         this.post = post;
     }
-
 
 // getters and setters
 }
