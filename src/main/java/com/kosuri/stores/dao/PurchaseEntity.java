@@ -9,11 +9,9 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "pharma_purchase_detail")
 public class PurchaseEntity{
-
-
     @Id
     @Column(name="Doc_Number")
-    private Integer doc_Number;
+    private Long doc_Number;
 
 
     @Column(name="Ref_Doc_Number",nullable = true, length = 45)
@@ -551,6 +549,9 @@ public class PurchaseEntity{
         this.post = post;
     }
 
+    public String getSaleRate() {
+        return SaleRate;
+    }
 // getters and setters
 }
 

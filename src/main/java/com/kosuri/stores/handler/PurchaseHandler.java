@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,14 +20,14 @@ public class PurchaseHandler {
     @Autowired
     private PurchaseRepository purchaseRepository;
 
-    public void createPurchaseEntityFromRequest(MultipartFile reapExcelDataFile){
+    public void createPurchaseEntityFromRequest(MultipartFile reapExcelDataFile) throws Exception{
 
         List<PurchaseEntity> purchaseArrayList = new ArrayList<PurchaseEntity>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
         XSSFSheet worksheet = workbook.getSheetAt(0);
 
 
-        for(int i=1;i<worksheet.getPhysicalNumberOfRows() ;i++) {
+        for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
             PurchaseEntity tempPurchase = new PurchaseEntity();
 
 
@@ -84,11 +85,10 @@ public class PurchaseHandler {
             System.out.println("fetching repository " + purchases);
             try {
                 purchaseRepository.save(tempPurchase);
-            }catch(Exception e){
+            } catch (Exception e) {
                 System.out.println(e.getCause());
             }
             purchaseArrayList.add(tempPurchase);
         }
-
-
     }
+}
