@@ -129,7 +129,7 @@ public class SaleEntity {
     }
 
 
-    public Long getDoc_No() {
+    public String getDoc_No() {
         return doc_No;
     }
 
