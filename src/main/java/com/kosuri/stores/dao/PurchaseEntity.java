@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 public class PurchaseEntity{
     @Id
     @Column(name="Doc_Number")
-    private Long doc_Number;
+    private long doc_Number;
 
 
     @Column(name="Ref_Doc_Number",nullable = true, length = 45)
@@ -52,7 +52,7 @@ public class PurchaseEntity{
     private String dcYear;
     @Column(name="DC_Prefix",nullable = true, length = 45)
     private String dcPrefix;
-    @Column(name="DC_Year",nullable = true, length = 45)
+    @Column(name="DC_Srno",nullable = true, length = 45)
     private String dcSrno;
     @Column(name="Qty_Box",nullable = true, length = 45)
     private String qty;
@@ -132,12 +132,12 @@ public class PurchaseEntity{
         this.itemCat = itemCat;
     }
 
-    public Long getDoc_Number() {
+    public long getDoc_Number() {
         return doc_Number;
     }
 
 
-    public void setDoc_Number(Long doc_Number) {
+    public void setDoc_Number(long doc_Number) {
         this.doc_Number = doc_Number;
     }
 
@@ -280,7 +280,6 @@ public class PurchaseEntity{
     public void setMfacName(String mfacName) {
         this.mfacName = mfacName;
     }
-
 
     public String getBrandName() {
         return brandName;

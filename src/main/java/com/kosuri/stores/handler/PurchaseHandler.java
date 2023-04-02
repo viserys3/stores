@@ -27,22 +27,22 @@ public class PurchaseHandler {
         XSSFSheet worksheet = workbook.getSheetAt(0);
 
 
-        for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
+        for (int i = 5; i < worksheet.getPhysicalNumberOfRows(); i++) {
             PurchaseEntity tempPurchase = new PurchaseEntity();
 
 
             XSSFRow row = worksheet.getRow(i);
 
 
-            tempPurchase.setDoc_Number((long) row.getCell(0).getNumericCellValue());
+            tempPurchase.setDoc_Number((long)row.getCell(0).getNumericCellValue());
             tempPurchase.setReadableDocNo(row.getCell(1).getStringCellValue());
             tempPurchase.setDate(row.getCell(2).getStringCellValue());
             tempPurchase.setBillNo(row.getCell(3).getStringCellValue());
-            tempPurchase.setBillDt(row.getCell(4).getStringCellValue());
+            tempPurchase.setBillDt(String.valueOf(row.getCell(4).getNumericCellValue()));
             tempPurchase.setItemCode(row.getCell(5).getStringCellValue());
             tempPurchase.setItemName(row.getCell(6).getStringCellValue());
             tempPurchase.setBatchNo(row.getCell(7).getStringCellValue());
-            tempPurchase.setExpiryDate(row.getCell(8).getStringCellValue());
+            tempPurchase.setExpiryDate(String.valueOf(row.getCell(8).getNumericCellValue()));
             tempPurchase.setCatCode(row.getCell(9).getStringCellValue());
             tempPurchase.setCatName(row.getCell(10).getStringCellValue());
             tempPurchase.setMfacCode(row.getCell(11).getStringCellValue());
