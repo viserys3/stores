@@ -12,8 +12,12 @@ public class SearchHandler {
 
     @Autowired
     StockRepository stockRepository;
+    
+    @Autowired
+    StoreRepository storeRepository;
 
     public List<SearchResult> search(String medicine, String location) {
+        
         List<String> storeIds = new ArrayList<>();
         List<SearchResult> searchResultList = new ArrayList<>();
 
