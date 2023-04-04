@@ -110,6 +110,8 @@ public class PurchaseEntity{
     private String cessPer;
     @Column(name="Cess_Amt",nullable = true, length = 45)
     private String cessAmt;
+    @Column(name="Store_ID")
+    private String storeId;
 
     public String getItemCat() {
         return itemCat;
@@ -551,7 +553,15 @@ public class PurchaseEntity{
     public String getSaleRate() {
         return SaleRate;
     }
-// getters and setters
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+    // getters and setters
 }
 
 
