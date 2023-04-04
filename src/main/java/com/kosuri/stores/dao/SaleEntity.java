@@ -13,10 +13,10 @@ public class SaleEntity {
     @Id
     private Integer id;
 
-    @Column(name="Doc_Number")
+    @Column(name="Doc_No")
     private String doc_Number;
 
-    @Column(name="Read_Doc_Number",nullable = true, length = 45)
+    @Column(name="Read_Doc_No",nullable = true, length = 45)
     private String readableDocNo;
     @Column(name = "Date")
     private Date date;
@@ -34,7 +34,7 @@ public class SaleEntity {
     private String itemCode;
     @Column(name="Item_Name",nullable = true, length = 45)
     private String itemName;
-    @Column(name="Batch_Number",nullable = true, length = 45)
+    @Column(name="Batch_No",nullable = true, length = 45)
     private String batchNo;
     @Column(name="Exp_Dt",nullable = true, length = 45)
     private Date expiryDate;
@@ -81,7 +81,7 @@ public class SaleEntity {
     private Double taxableAmt;
     @Column(name="Cgst_Per",nullable = true, length = 45)
     private Integer cGSTPer;
-    @Column(name="Sgs_Per",nullable = true, length = 45)
+    @Column(name="Sgst_Per",nullable = true, length = 45)
     private Integer sGSTPer;
     @Column(name="Cgst_Amt",nullable = true, length = 45)
     private Double cGSTAmt;
@@ -106,9 +106,10 @@ public class SaleEntity {
     @Column(name="Add_Cess_Amt",nullable = true, length = 45)
     private Double addCessAmt;
     @Column(name="Round_Off",nullable = true, length = 45)
-    private String roundOff;
+    private Double roundOff;
     @Column(name="Supp_Bill_No",nullable = true, length = 45)
     private String suppBillNo;
+
     @Column(name="Professional",nullable = true, length = 45)
     private String professional;
     @Column(name="Mobile",nullable = true, length = 45)
@@ -118,7 +119,7 @@ public class SaleEntity {
     @Column(name="Pur_Rate",nullable = true, length = 45)
     private Double purRate;
     @Column(name="Pur_Rate_With_GSt",nullable = true, length = 45)
-    private String purRateWithGsT;
+    private Double purRateWithGsT;
     @Column(name="Store_ID",nullable = true, length = 45)
     private String storeId;
     @Column(name="Sale_Mode",nullable = true, length = 45)
@@ -371,10 +372,10 @@ public class SaleEntity {
     public void setAddCessAmt(Double addCessAmt) {
         this.addCessAmt = addCessAmt;
     }
-    public String getRoundOff() {
+    public Double getRoundOff() {
         return roundOff;
     }
-    public void setRoundOff(String roundOff) {
+    public void setRoundOff(Double roundOff) {
         this.roundOff = roundOff;
     }
     public String getSuppBillNo() {
@@ -407,10 +408,10 @@ public class SaleEntity {
     public void setPurRate(Double purRate) {
         this.purRate = purRate;
     }
-    public String getPurRateWithGsT() {
+    public Double getPurRateWithGsT() {
         return purRateWithGsT;
     }
-    public void setPurRateWithGsT(String purRateWithGsT) {
+    public void setPurRateWithGsT(Double purRateWithGsT) {
         this.purRateWithGsT = purRateWithGsT;
     }
     public String getStoreId() {
