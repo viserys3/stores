@@ -20,7 +20,6 @@ public class PurchaseEntity {
     @Column(name = "Date")
     private Date date;
 
-
     @Column(name="Bill_No",nullable = true, length = 45)
     private String billNo;
 
