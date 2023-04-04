@@ -37,7 +37,7 @@ public class RepositoryHandler {
         }
         try {
             storeRepository.save(storeEntity);
-        }catch(Exception e){
+        } catch(Exception e) {
             System.out.println(e.getCause());
         }
     }
@@ -64,7 +64,7 @@ public class RepositoryHandler {
         for (StoreEntity store: existingStores.get()){
             //TODO Update to query based on id
             if (store.getName().contains("DUMMY")){
-                System.out.println("User already exisits in system");
+                System.out.println("User already exists in system");
                 return false;
             }
         }
