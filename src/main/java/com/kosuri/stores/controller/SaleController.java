@@ -9,10 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -22,8 +20,8 @@ public class SaleController {
     private RepositoryHandler repositoryHandler;
     @Autowired
     private SaleHandler saleHandler;
-    @PostMapping("/importSale")
-    public void mapReapExcelDatatoDB(@RequestParam("file") MultipartFile reapExcelDataFile) throws IOException {
+    @PostMapping("/import")
+    public void mapReapExcelDatatoDB(@RequestParam("file") MultipartFile reapExcelDataFile) throws Exception {
         saleHandler.createSaleEntityFromRequest(reapExcelDataFile);
     }
 }

@@ -23,56 +23,61 @@ public class SaleHandler {
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
         XSSFSheet worksheet = workbook.getSheetAt(0);
 
-
-        for(int i=1;i<worksheet.getPhysicalNumberOfRows() ;i++) {
+        for(int i=5;i<worksheet.getPhysicalNumberOfRows() ;i++) {
             SaleEntity tempSale = new SaleEntity();
             XSSFRow row = worksheet.getRow(i);
-            tempSale.setDoc_No(row.getCell(0).getStringCellValue());
+            tempSale.setDoc_Number(row.getCell(0).getStringCellValue());
             tempSale.setReadableDocNo(row.getCell(1).getStringCellValue());
             tempSale.setDate(row.getCell(2).getDateCellValue());
-            tempSale.setSuppBillNo(row.getCell(3).getStringCellValue());
-            tempSale.setDate(row.getCell(4).getDateCellValue());
-            tempSale.setItemCode(row.getCell(5).getStringCellValue());
-            tempSale.setItemName(row.getCell(6).getStringCellValue());
-            tempSale.setBatchNo(row.getCell(7).getStringCellValue());
-            tempSale.setExpDt(row.getCell(8).getStringCellValue());
-            tempSale.setCatCode(row.getCell(9).getStringCellValue());
-            tempSale.setCatName(row.getCell(10).getStringCellValue());
-            tempSale.setMfacCode(row.getCell(11).getStringCellValue());
-            tempSale.setMfacName(row.getCell(12).getStringCellValue());
-            tempSale.setBrandName(row.getCell(13).getStringCellValue());
-            tempSale.setPacking(row.getCell(14).getStringCellValue());
-            tempSale.setDcYear(row.getCell(15).getStringCellValue());
-            tempSale.setDcPrefix(row.getCell(16).getStringCellValue());
-            tempSale.setDcSrno(row.getCell(17).getStringCellValue());
-            tempSale.setQtyBox(row.getCell(18).getStringCellValue());
-            tempSale.setPackQty(row.getCell(19).getStringCellValue());
-            tempSale.(row.getCell(20).getStringCellValue());
-            tempSale.setSchQty(row.getCell(21).getStringCellValue());
-            tempSale.setSchLooseQty(row.getCell(22).getStringCellValue());
-            tempSale.setSchDisc(row.getCell(23).getStringCellValue());
-            tempSale.setSaleRate(row.getCell(24).getStringCellValue());
-            tempSale.setPurRate(row.getCell(25).getStringCellValue());
-            tempSale.setmRP(row.getCell(26).getNumericCellValue());
-            tempSale.setPurValue(row.getCell(27).getStringCellValue());
-            tempSale.setDiscPer(row.getCell(28).getStringCellValue());
-            tempSale.setMargin(row.getCell(29).getStringCellValue());
-            tempSale.setSuppCode(row.getCell(30).getStringCellValue());
-            tempSale.setSuppName(row.getCell(31).getStringCellValue());
-            tempSale.setDiscValue(row.getCell(32).getStringCellValue());
-            tempSale.setTaxableAmt(row.getCell(33).getStringCellValue());
-            tempSale.setGstCode(row.getCell(34).getStringCellValue());
-            tempSale.setcGSTPer(row.getCell(35).getStringCellValue());
-            tempSale.setcGSTAmt(row.getCell(36).getStringCellValue());
-            tempSale.setsGSTPer(row.getCell(37).getStringCellValue());
-            tempSale.setsGSTAmt(row.getCell(38).getStringCellValue());
-            tempSale.setiGSTPer(row.getCell(39).getStringCellValue());
-            tempSale.setCessPer(row.getCell(40).getStringCellValue());
-            tempSale.setCessAmt(row.getCell(41).getStringCellValue());
+            tempSale.setTime(String.valueOf(row.getCell(3).getDateCellValue()));
+            tempSale.setCustCode(row.getCell(4).getStringCellValue());
+            tempSale.setCustName(row.getCell(5).getStringCellValue());
 
 
-            tempSale.setTotal(row.getCell(42).getStringCellValue());
-            tempSale.setPost(row.getCell(43).getStringCellValue());
+            tempSale.setPatientName(row.getCell(6).getStringCellValue());
+            tempSale.setCreatedUser(row.getCell(7).getStringCellValue());
+            tempSale.setItemCode(row.getCell(8).getStringCellValue());
+            tempSale.setItemName(row.getCell(9).getStringCellValue());
+            tempSale.setBatchNo(row.getCell(10).getStringCellValue());
+            tempSale.setExpiryDate(row.getCell(11).getDateCellValue());
+            tempSale.setMfacCode(row.getCell(12).getStringCellValue());
+            tempSale.setCatCode(row.getCell(13).getStringCellValue());
+            tempSale.setCatName(row.getCell(14).getStringCellValue());
+            tempSale.setBrandName(row.getCell(15).getStringCellValue());
+            tempSale.setPacking(row.getCell(16).getStringCellValue());
+            tempSale.setQtyBox((int)row.getCell(17).getNumericCellValue());
+            tempSale.setQty((int)row.getCell(18).getNumericCellValue());
+            tempSale.setSchQty((int)row.getCell(19).getNumericCellValue());
+            tempSale.setSchDisc(row.getCell(20).getNumericCellValue());
+            tempSale.setSaleRate(row.getCell(21).getNumericCellValue());
+            tempSale.setmRP(row.getCell(22).getNumericCellValue());
+            tempSale.setSaleValue(row.getCell(23).getNumericCellValue());
+            tempSale.setDiscPerct(row.getCell(24).getNumericCellValue());
+            tempSale.setDiscValue(row.getCell(25).getNumericCellValue());
+            tempSale.setTaxableAmt(row.getCell(26).getNumericCellValue());
+            tempSale.setcGSTPer((int)row.getCell(27).getNumericCellValue());
+            tempSale.setcGSTAmt(row.getCell(28).getNumericCellValue());
+            tempSale.setsGSTPer((int)row.getCell(29).getNumericCellValue());
+            tempSale.setsGSTAmt(row.getCell(30).getNumericCellValue());
+            tempSale.setiGSTPer((int)row.getCell(31).getNumericCellValue());
+            tempSale.setiGSTAmt(row.getCell(32).getNumericCellValue());
+            tempSale.setCessPer((int)row.getCell(33).getNumericCellValue());
+            tempSale.setCessAmt(row.getCell(34).getNumericCellValue());
+            tempSale.setAddCessPer((int)row.getCell(35).getNumericCellValue());
+            tempSale.setAddCessAmt(row.getCell(36).getNumericCellValue());
+            tempSale.setTotal(row.getCell(37).getNumericCellValue());
+            tempSale.setRoundOff(row.getCell(38).getStringCellValue());
+            tempSale.setSuppCode(row.getCell(39).getStringCellValue());
+            tempSale.setSuppName(row.getCell(40).getStringCellValue());
+            tempSale.setProfessional(row.getCell(41).getStringCellValue());
+
+
+            tempSale.setMobile(row.getCell(42).getStringCellValue());
+            tempSale.setLcCode(row.getCell(43).getStringCellValue());
+            tempSale.setPurRate(row.getCell(44).getNumericCellValue());
+            tempSale.setPurRateWithGsT(row.getCell(45).getStringCellValue());
+            tempSale.setStoreId(row.getCell(46).getStringCellValue());
+            tempSale.setSaleMode(row.getCell(47).getStringCellValue());
 
             long sales = saleRepository.count();
             System.out.println("fetching repository " + sales);
