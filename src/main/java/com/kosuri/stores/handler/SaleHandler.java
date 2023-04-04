@@ -1,19 +1,23 @@
 package com.kosuri.stores.handler;
 import com.kosuri.stores.dao.SaleRepository;
 import com.kosuri.stores.dao.SaleEntity;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
 public class SaleHandler {
     @Autowired
     private SaleRepository saleRepository;
-    public void createSaleEntityFromRequest(MultipartFile reapExcelDataFile){
+    public void createSaleEntityFromRequest(MultipartFile reapExcelDataFile) throws Exception{
 
         List<SaleEntity> saleArrayList = new ArrayList<SaleEntity>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
@@ -25,13 +29,13 @@ public class SaleHandler {
             XSSFRow row = worksheet.getRow(i);
             tempSale.setDoc_No(row.getCell(0).getStringCellValue());
             tempSale.setReadableDocNo(row.getCell(1).getStringCellValue());
-            tempSale.setDate(row.getCell(2).getStringCellValue());
-            tempSale.setBillNo(row.getCell(3).getStringCellValue());
-            tempSale.setBillDt(row.getCell(4).getStringCellValue());
+            tempSale.setDate(row.getCell(2).getDateCellValue());
+            tempSale.setSuppBillNo(row.getCell(3).getStringCellValue());
+            tempSale.setDate(row.getCell(4).getDateCellValue());
             tempSale.setItemCode(row.getCell(5).getStringCellValue());
             tempSale.setItemName(row.getCell(6).getStringCellValue());
             tempSale.setBatchNo(row.getCell(7).getStringCellValue());
-            tempSale.setExpiryDate(row.getCell(8).getStringCellValue());
+            tempSale.setExpDt(row.getCell(8).getStringCellValue());
             tempSale.setCatCode(row.getCell(9).getStringCellValue());
             tempSale.setCatName(row.getCell(10).getStringCellValue());
             tempSale.setMfacCode(row.getCell(11).getStringCellValue());
@@ -43,13 +47,13 @@ public class SaleHandler {
             tempSale.setDcSrno(row.getCell(17).getStringCellValue());
             tempSale.setQtyBox(row.getCell(18).getStringCellValue());
             tempSale.setPackQty(row.getCell(19).getStringCellValue());
-            tempSale.setLooseQty(row.getCell(20).getStringCellValue());
-            tempSale.setSchPackQty(row.getCell(21).getStringCellValue());
+            tempSale.(row.getCell(20).getStringCellValue());
+            tempSale.setSchQty(row.getCell(21).getStringCellValue());
             tempSale.setSchLooseQty(row.getCell(22).getStringCellValue());
             tempSale.setSchDisc(row.getCell(23).getStringCellValue());
             tempSale.setSaleRate(row.getCell(24).getStringCellValue());
             tempSale.setPurRate(row.getCell(25).getStringCellValue());
-            tempSale.setMRP(row.getCell(26).getStringCellValue());
+            tempSale.setmRP(row.getCell(26).getNumericCellValue());
             tempSale.setPurValue(row.getCell(27).getStringCellValue());
             tempSale.setDiscPer(row.getCell(28).getStringCellValue());
             tempSale.setMargin(row.getCell(29).getStringCellValue());

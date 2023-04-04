@@ -4,7 +4,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.NotNull;
+
+import java.time.LocalDateTime;
+import java.util.Date;
 
 
 @Entity
@@ -18,9 +20,9 @@ public class SaleEntity {
     @Column(name="Read_Doc_Number",nullable = true, length = 45)
     private String readableDocNo;
     @Column(name="Date",nullable = true, length = 45)
-    private String date;
+    private Date date;
     @Column(name="Time",nullable = true, length = 45)
-    private String time;
+    private LocalDateTime time;
     @Column(name="Cust_Code",nullable = true, length = 45)
     private String custCode;
     @Column(name="Cust_Name",nullable = true, length = 45)
@@ -54,45 +56,45 @@ public class SaleEntity {
     @Column(name="Packing",nullable = true, length = 45)
     private String packing;
     @Column(name="Qty_Box",nullable = true, length = 45)
-    private String qtyBox;
+    private Integer qtyBox;
     @Column(name="Qty",nullable = true, length = 45)
-    private String qty;
+    private Integer qty;
     @Column(name="Sch_Qty",nullable = true, length = 45)
-    private String schQty;
+    private Integer schQty;
     @Column(name="Sch_Disc",nullable = true, length = 45)
-    private String schDisc;
+    private Double schDisc;
     @Column(name="Mrp",nullable = true, length = 45)
-    private String mRP;
+    private Double mRP;
     @Column(name="Sale_Value",nullable = true, length = 45)
     private String saleValue;
     @Column(name="Disc_Perct",nullable = true, length = 45)
-    private String discPer;
+    private Double discPer;
     @Column(name="Disc_Value",nullable = true, length = 45)
-    private String discValue;
+    private Double discValue;
     @Column(name="Taxable_Amt",nullable = true, length = 45)
-    private String taxableAmt;
+    private Double taxableAmt;
     @Column(name="Cgst_Per",nullable = true, length = 45)
-    private String cGSTPer;
+    private Integer cGSTPer;
     @Column(name="Sgst_Per",nullable = true, length = 45)
-    private String sGSTPer;
+    private Integer sGSTPer;
     @Column(name="Cgst_Amt",nullable = true, length = 45)
-    private String cGSTAmt;
+    private Double cGSTAmt;
     @Column(name="Sgst_Amt",nullable = true, length = 45)
-    private String sGSTAmt;
+    private Double sGSTAmt;
     @Column(name="Igst_Per",nullable = true, length = 45)
-    private String iGSTPer;
+    private Integer iGSTPer;
     @Column(name="Igst_Amt",nullable = true, length = 45)
-    private String iGSTAmt;
+    private Double iGSTAmt;
     @Column(name="Cess_Per",nullable = true, length = 45)
-    private String cessPer;
+    private Integer cessPer;
     @Column(name="Cess_Amt",nullable = true, length = 45)
-    private String addCessAmt;
+    private Double addCessAmt;
     @Column(name="Add_Cess_Per",nullable = true, length = 45)
-    private String addCessPer;
+    private Integer addCessPer;
     @Column(name="Add_Cess_Amt",nullable = true, length = 45)
-    private String cessAmt;
+    private Double cessAmt;
     @Column(name="Total",nullable = true, length = 45)
-    private String total;
+    private Double total;
     @Column(name="Round_Off",nullable = true, length = 45)
     private String roundOff;
     @Column(name="Supp_Bill_No",nullable = true, length = 45)
@@ -110,7 +112,7 @@ public class SaleEntity {
 
 
     @Column(name="Pur_Rate",nullable = true, length = 45)
-    private String purRate;
+    private Double purRate;
     @Column(name="Pur_Rate_With_GST",nullable = true, length = 45)
     private String purRateWithGst;
     @Column(name="Store_ID",nullable = true, length = 45)
@@ -149,22 +151,22 @@ public class SaleEntity {
     }
 
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
 
-    public String getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
 
-    public void setTime(String time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 
@@ -309,52 +311,52 @@ public class SaleEntity {
     }
 
 
-    public String getQtyBox() {
+    public Integer getQtyBox() {
         return qtyBox;
     }
 
 
-    public void setQtyBox(String qtyBox) {
+    public void setQtyBox(Integer qtyBox) {
         this.qtyBox = qtyBox;
     }
 
 
-    public String getQty() {
+    public Integer getQty() {
         return qty;
     }
 
 
-    public void setQty(String qty) {
+    public void setQty(Integer qty) {
         this.qty = qty;
     }
 
 
-    public String getSchQty() {
+    public Integer getSchQty() {
         return schQty;
     }
 
 
-    public void setSchQty(String schQty) {
+    public void setSchQty(Integer schQty) {
         this.schQty = schQty;
     }
 
 
-    public String getSchDisc() {
+    public Double getSchDisc() {
         return schDisc;
     }
 
 
-    public void setSchDisc(String schDisc) {
+    public void setSchDisc(Double schDisc) {
         this.schDisc = schDisc;
     }
 
 
-    public String getmRP() {
+    public Double getmRP() {
         return mRP;
     }
 
 
-    public void setmRP(String mRP) {
+    public void setmRP(Double mRP) {
         this.mRP = mRP;
     }
 
@@ -369,142 +371,142 @@ public class SaleEntity {
     }
 
 
-    public String getDiscPer() {
+    public Double getDiscPer() {
         return discPer;
     }
 
 
-    public void setDiscPer(String discPer) {
+    public void setDiscPer(Double discPer) {
         this.discPer = discPer;
     }
 
 
-    public String getDiscValue() {
+    public Double getDiscValue() {
         return discValue;
     }
 
 
-    public void setDiscValue(String discValue) {
+    public void setDiscValue(Double discValue) {
         this.discValue = discValue;
     }
 
 
-    public String getTaxableAmt() {
+    public Double getTaxableAmt() {
         return taxableAmt;
     }
 
 
-    public void setTaxableAmt(String taxableAmt) {
+    public void setTaxableAmt(Double taxableAmt) {
         this.taxableAmt = taxableAmt;
     }
 
 
-    public String getcGSTPer() {
+    public Integer getcGSTPer() {
         return cGSTPer;
     }
 
 
-    public void setcGSTPer(String cGSTPer) {
+    public void setcGSTPer(Integer cGSTPer) {
         this.cGSTPer = cGSTPer;
     }
 
 
-    public String getsGSTPer() {
+    public Integer getsGSTPer() {
         return sGSTPer;
     }
 
 
-    public void setsGSTPer(String sGSTPer) {
+    public void setsGSTPer(Integer sGSTPer) {
         this.sGSTPer = sGSTPer;
     }
 
 
-    public String getcGSTAmt() {
+    public Double getcGSTAmt() {
         return cGSTAmt;
     }
 
 
-    public void setcGSTAmt(String cGSTAmt) {
+    public void setcGSTAmt(Double cGSTAmt) {
         this.cGSTAmt = cGSTAmt;
     }
 
 
-    public String getsGSTAmt() {
+    public Double getsGSTAmt() {
         return sGSTAmt;
     }
 
 
-    public void setsGSTAmt(String sGSTAmt) {
+    public void setsGSTAmt(Double sGSTAmt) {
         this.sGSTAmt = sGSTAmt;
     }
 
 
-    public String getiGSTPer() {
+    public Integer getiGSTPer() {
         return iGSTPer;
     }
 
 
-    public void setiGSTPer(String iGSTPer) {
+    public void setiGSTPer(Integer iGSTPer) {
         this.iGSTPer = iGSTPer;
     }
 
 
-    public String getiGSTAmt() {
+    public Double getiGSTAmt() {
         return iGSTAmt;
     }
 
 
-    public void setiGSTAmt(String iGSTAmt) {
+    public void setiGSTAmt(Double iGSTAmt) {
         this.iGSTAmt = iGSTAmt;
     }
 
 
-    public String getCessPer() {
+    public Integer getCessPer() {
         return cessPer;
     }
 
 
-    public void setCessPer(String cessPer) {
+    public void setCessPer(Integer cessPer) {
         this.cessPer = cessPer;
     }
 
 
-    public String getAddCessAmt() {
+    public Double getAddCessAmt() {
         return addCessAmt;
     }
 
 
-    public void setAddCessAmt(String addCessAmt) {
+    public void setAddCessAmt(Double addCessAmt) {
         this.addCessAmt = addCessAmt;
     }
 
 
-    public String getAddCessPer() {
+    public Integer getAddCessPer() {
         return addCessPer;
     }
 
 
-    public void setAddCessPer(String addCessPer) {
+    public void setAddCessPer(Integer addCessPer) {
         this.addCessPer = addCessPer;
     }
 
 
-    public String getCessAmt() {
+    public Double getCessAmt() {
         return cessAmt;
     }
 
 
-    public void setCessAmt(String cessAmt) {
+    public void setCessAmt(Double cessAmt) {
         this.cessAmt = cessAmt;
     }
 
 
-    public String getTotal() {
+    public Double getTotal() {
         return total;
     }
 
 
-    public void setTotal(String total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
@@ -579,12 +581,12 @@ public class SaleEntity {
     }
 
 
-    public String getPurRate() {
+    public Double getPurRate() {
         return purRate;
     }
 
 
-    public void setPurRate(String purRate) {
+    public void setPurRate(Double purRate) {
         this.purRate = purRate;
     }
 
