@@ -8,7 +8,7 @@ import java.util.Date;
 @Table(name = "pharma_purchase_detail")
 public class PurchaseEntity {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
 
