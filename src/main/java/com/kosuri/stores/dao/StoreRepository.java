@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
+public interface StoreRepository extends JpaRepository<StoreEntity, String> {
     Boolean existsByOwnerEmail(String ownerEmail);
     Boolean existsByOwnerContact(String ownerContact);
 

@@ -48,8 +48,8 @@ public class UserHandler {
         storeEntity.setPassword(request.getPassword());
 
         //setting dummy parameter.
-        //storeEntity.setId("DUMMY" + request.getPhoneNumber());
-        storeEntity.setId(((int) Math.random()));
+        storeEntity.setId("DUMMY" + request.getPhoneNumber());
+//        storeEntity.setId(((int) Math.random()));
         storeEntity.setType("DUMMY");
         storeEntity.setName("DUMMY");
         storeEntity.setPincode("DUMMY");

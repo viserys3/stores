@@ -13,7 +13,7 @@ public class CreateStoreRequest extends RequestEntity<CreateStoreRequest> {
 
     @NotNull
     private String typee;
-    private int id;
+    private String id;
     @NotNull
     private String name;
     @NotNull
@@ -41,11 +41,11 @@ public class CreateStoreRequest extends RequestEntity<CreateStoreRequest> {
         this.typee = typee;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

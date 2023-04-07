@@ -44,7 +44,7 @@ public class RepositoryHandler {
 
     public void addUser(@Valid StoreEntity storeEntity, AddUserRequest request) {
         //TODO Update to query based on id
-        Optional<StoreEntity> store = storeRepository.findById(123);
+        Optional<StoreEntity> store = storeRepository.findById("123");
         store.get().setOwner(request.getName());
         store.get().setOwnerEmail(request.getEmail());
         store.get().setOwnerContact(request.getPhoneNumber());

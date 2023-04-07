@@ -30,7 +30,7 @@ public class SearchHandler {
         if (storeList.isPresent()) {
             for (StoreEntity storeEntity : storeList.get()) {
                 List<StockEntity> availableStockEntity = stockRepository.findByItemNameContainingAndStoreIdAndBalQuantityGreaterThan(medicine,
-                        Integer.toString(storeEntity.getId()), 0D);
+                        storeEntity.getId(), 0D);
 
                 for (StockEntity stockEntity : availableStockEntity) {
                     SearchResult searchResult = new SearchResult();
