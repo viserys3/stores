@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface StockRepository extends JpaRepository<StockEntity, StockId> {
 
-    public StockEntity findByMfNameAndItemCodeAndItemNameAndBatchAndSupplierNameAndManufacturerAndStoreId(String mFName, String itemCode, String itemName, String batch, String supplierName, Integer manufacturer, String storeId);
+    public StockEntity findByMfNameAndItemCodeAndItemNameAndBatchAndSupplierNameAndManufacturerAndStoreId(String mFName, String itemCode, String itemName, String batch, String supplierName, String manufacturer, String storeId);
 
     public List<StockEntity> findByItemNameAndStoreIdAndBalQuantityGreaterThan(String itemName, String storeId, Double balQuantity);
 }

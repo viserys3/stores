@@ -21,7 +21,8 @@ public class SaleController {
     @Autowired
     private SaleHandler saleHandler;
     @PostMapping("/import")
-    public void mapReapExcelDatatoDB(@RequestParam("file") MultipartFile reapExcelDataFile) throws Exception {
-        saleHandler.createSaleEntityFromRequest(reapExcelDataFile);
+    public void mapReapExcelDatatoDB(@RequestParam("file") MultipartFile reapExcelDataFile,
+                                     @RequestParam("store_id") String storeId) throws Exception {
+        saleHandler.createSaleEntityFromRequest(reapExcelDataFile, storeId);
     }
 }

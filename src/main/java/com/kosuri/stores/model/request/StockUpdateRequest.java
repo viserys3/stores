@@ -2,8 +2,10 @@ package com.kosuri.stores.model.request;
 
 import com.kosuri.stores.model.enums.StockUpdateRequestType;
 
+import java.util.Date;
+
 public class StockUpdateRequest {
-    private Integer manufacturer;
+    private String manufacturer;
 
     private StockUpdateRequestType stockUpdateRequestType;
 
@@ -19,7 +21,7 @@ public class StockUpdateRequest {
 
     private String batch;
 
-    private String expiryDate;
+    private Date expiryDate;
 
     private Double balQuantity;
 
@@ -35,11 +37,11 @@ public class StockUpdateRequest {
 
     private String storeId;
 
-    public Integer getManufacturer() {
+    public String getManufacturer() {
         return manufacturer;
     }
 
-    public void setManufacturer(Integer manufacturer) {
+    public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
 
@@ -91,11 +93,11 @@ public class StockUpdateRequest {
         this.batch = batch;
     }
 
-    public String getExpiryDate() {
+    public Date getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 

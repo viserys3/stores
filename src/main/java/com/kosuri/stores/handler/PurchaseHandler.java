@@ -2,6 +2,8 @@ package com.kosuri.stores.handler;
 
 import com.kosuri.stores.dao.PurchaseEntity;
 import com.kosuri.stores.dao.PurchaseRepository;
+import com.kosuri.stores.model.enums.StockUpdateRequestType;
+import com.kosuri.stores.model.request.StockUpdateRequest;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -20,7 +22,10 @@ public class PurchaseHandler {
     @Autowired
     private PurchaseRepository purchaseRepository;
 
-    public void createPurchaseEntityFromRequest(MultipartFile reapExcelDataFile) throws Exception{
+    @Autowired
+    private StockHandler stockHandler;
+
+    public void createPurchaseEntityFromRequest(MultipartFile reapExcelDataFile, String storeId) throws Exception {
 
         List<PurchaseEntity> purchaseArrayList = new ArrayList<PurchaseEntity>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
@@ -76,14 +81,41 @@ public class PurchaseHandler {
             tempPurchase.setCessAmt(row.getCell(41).getNumericCellValue());
             tempPurchase.setTotal(row.getCell(42).getNumericCellValue());
             tempPurchase.setPost(String.valueOf(row.getCell(43).getNumericCellValue()));
+            tempPurchase.setStoreId(storeId);
 
             purchaseArrayList.add(tempPurchase);
         }
 
         try {
             purchaseRepository.saveAll(purchaseArrayList);
+
+            for(PurchaseEntity purchaseEntity: purchaseArrayList) {
+                updateStock(purchaseEntity);
+            }
+
         } catch (Exception e) {
             System.out.println(e.getCause());
         }
+    }
+
+    private void updateStock(PurchaseEntity purchaseEntity) {
+        StockUpdateRequest stockUpdateRequest = new StockUpdateRequest();
+        stockUpdateRequest.setExpiryDate(purchaseEntity.getExpiryDate());
+        stockUpdateRequest.setBalLooseQuantity(purchaseEntity.getLooseQty());
+        stockUpdateRequest.setBatch(purchaseEntity.getBatchNo());
+        stockUpdateRequest.setStockUpdateRequestType(StockUpdateRequestType.PURCHASE);
+        stockUpdateRequest.setBalPackQuantity(purchaseEntity.getPackQty());
+//        stockUpdateRequest.setBalQuantity();
+//        stockUpdateRequest.setTotal();
+        stockUpdateRequest.setItemCategory(purchaseEntity.getItemCat());
+        stockUpdateRequest.setItemCode(purchaseEntity.getItemCode());
+        stockUpdateRequest.setItemName(purchaseEntity.getItemName());
+        stockUpdateRequest.setMfName(purchaseEntity.getMfacName());
+        stockUpdateRequest.setManufacturer(purchaseEntity.getMfacCode());
+        stockUpdateRequest.setStoreId(purchaseEntity.getStoreId());
+        stockUpdateRequest.setMrpPack(purchaseEntity.getmRP());
+        stockUpdateRequest.setSupplierName(purchaseEntity.getSuppName());
+
+        stockHandler.updateStock(stockUpdateRequest);
     }
 }
