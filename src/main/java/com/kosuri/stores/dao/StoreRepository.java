@@ -15,4 +15,6 @@ public interface StoreRepository extends JpaRepository<StoreEntity, Integer> {
     Optional<List<StoreEntity>> findByOwnerContact(String ownerContact);
 
     Optional<List<StoreEntity>> findByOwnerEmailOrOwnerContact(String ownerEmail, String ownerContact);
+
+    Optional<List<StoreEntity>> findByLocationContaining(String location);
 }

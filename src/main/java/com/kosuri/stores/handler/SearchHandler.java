@@ -2,12 +2,18 @@ package com.kosuri.stores.handler;
 
 import com.kosuri.stores.dao.StockEntity;
 import com.kosuri.stores.dao.StockRepository;
+import com.kosuri.stores.dao.StoreEntity;
+import com.kosuri.stores.dao.StoreRepository;
+import com.kosuri.stores.model.Store;
 import com.kosuri.stores.model.search.SearchResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class SearchHandler {
 
     @Autowired
@@ -17,25 +23,27 @@ public class SearchHandler {
     StoreRepository storeRepository;
 
     public List<SearchResult> search(String medicine, String location) {
-        
-        List<String> storeIds = new ArrayList<>();
+
         List<SearchResult> searchResultList = new ArrayList<>();
 
-        for (String storeId: storeIds) {
-            List<StockEntity> availableStockEntity = stockRepository.findByItemNameAndStoreIdAndBalQuantityGreaterThan(medicine, storeId, 0D);
+        Optional<List<StoreEntity>> storeList = storeRepository.findByLocationContaining(location);
+        if (storeList.isPresent()) {
+            for (StoreEntity storeEntity : storeList.get()) {
+                List<StockEntity> availableStockEntity = stockRepository.findByItemNameContainingAndStoreIdAndBalQuantityGreaterThan(medicine,
+                        Integer.toString(storeEntity.getId()), 0D);
 
-            for(StockEntity stockEntity : availableStockEntity) {
-                SearchResult searchResult = new SearchResult();
-                searchResult.setMedicineName(stockEntity.getItemName());
-                searchResult.setMrp(stockEntity.getMrpPack());
+                for (StockEntity stockEntity : availableStockEntity) {
+                    SearchResult searchResult = new SearchResult();
+                    searchResult.setMedicineName(stockEntity.getItemName());
+                    searchResult.setMrp(stockEntity.getMrpPack());
+                    searchResult.setShopLocation(storeEntity.getLocation());
 
-                searchResultList.add(searchResult);
-//                searchResult.setShopLocation(stock.get);
+                    searchResultList.add(searchResult);
+                }
             }
         }
 
         return searchResultList;
-
     }
 }
 
