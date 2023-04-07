@@ -110,6 +110,16 @@ public class PurchaseEntity {
     private Integer cessPer;
     @Column(name="Cess_Amt",nullable = true, length = 45)
     private Double cessAmt;
+    @Column(name="Store_ID")
+    private String storeId;
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+    public String getStoreId() {
+        return storeId;
+    }
+
 
     public String getItemCat() {
         return itemCat;

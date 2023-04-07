@@ -1,6 +1,9 @@
 package com.kosuri.stores.handler;
+import com.kosuri.stores.dao.PurchaseEntity;
 import com.kosuri.stores.dao.SaleRepository;
 import com.kosuri.stores.dao.SaleEntity;
+import com.kosuri.stores.model.enums.StockUpdateRequestType;
+import com.kosuri.stores.model.request.StockUpdateRequest;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -17,7 +20,9 @@ import java.util.List;
 public class SaleHandler {
     @Autowired
     private SaleRepository saleRepository;
-    public void createSaleEntityFromRequest(MultipartFile reapExcelDataFile) throws Exception{
+    @Autowired
+    private StockHandler stockHandler;
+    public void createSaleEntityFromRequest(MultipartFile reapExcelDataFile, String storeId) throws Exception{
 
         List<SaleEntity> saleArrayList = new ArrayList<SaleEntity>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
@@ -79,15 +84,40 @@ public class SaleHandler {
             tempSale.setLcCode(row.getCell(46).getStringCellValue());
             tempSale.setPurRate(row.getCell(47).getNumericCellValue());
             tempSale.setPurRateWithGsT(row.getCell(48).getNumericCellValue());
-            tempSale.setStoreId("");
+            tempSale.setStoreId(storeId);
 
             saleArrayList.add(tempSale);
         }
 
         try {
             saleRepository.saveAll(saleArrayList);
+
+            for(SaleEntity saleEntity: saleArrayList) {
+                updateStock(saleEntity);
+            }
+
         }catch(Exception e){
             System.out.println(e.getCause());
         }
+    }
+
+    private void updateStock(SaleEntity saleEntity) {
+        StockUpdateRequest stockUpdateRequest = new StockUpdateRequest();
+        stockUpdateRequest.setExpiryDate(saleEntity.getExpiryDate());
+//        stockUpdateRequest.setBalLooseQuantity(saleEntity.getLooseQty());
+        stockUpdateRequest.setBatch(saleEntity.getBatchNo());
+        stockUpdateRequest.setStockUpdateRequestType(StockUpdateRequestType.SALE);
+//        stockUpdateRequest.setBalPackQuantity(saleEntity.getPackQty());
+//        stockUpdateRequest.setBalQuantity();
+//        stockUpdateRequest.setTotal();
+        stockUpdateRequest.setItemCode(saleEntity.getItemCode());
+        stockUpdateRequest.setItemName(saleEntity.getItemName());
+        stockUpdateRequest.setMfName(saleEntity.getMfacName());
+        stockUpdateRequest.setManufacturer(saleEntity.getMfacCode());
+        stockUpdateRequest.setStoreId(saleEntity.getStoreId());
+        stockUpdateRequest.setMrpPack(saleEntity.getmRP());
+        stockUpdateRequest.setSupplierName(saleEntity.getSuppName());
+
+        stockHandler.updateStock(stockUpdateRequest);
     }
 }
