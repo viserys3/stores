@@ -105,7 +105,7 @@ public class PurchaseHandler {
         stockUpdateRequest.setBatch(purchaseEntity.getBatchNo());
         stockUpdateRequest.setStockUpdateRequestType(StockUpdateRequestType.PURCHASE);
         stockUpdateRequest.setBalPackQuantity(purchaseEntity.getPackQty());
-//        stockUpdateRequest.setBalQuantity();
+        stockUpdateRequest.setBalQuantity(purchaseEntity.getPackQty()); // Check this
 //        stockUpdateRequest.setTotal();
         stockUpdateRequest.setItemCategory(purchaseEntity.getItemCat());
         stockUpdateRequest.setItemCode(purchaseEntity.getItemCode());

@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class StockId implements Serializable {
 
-    private Integer manufacturer;
+    private String manufacturer;
     private String mfName;
     private String itemCode;
     private String itemName;
