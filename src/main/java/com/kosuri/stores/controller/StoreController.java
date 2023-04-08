@@ -7,6 +7,7 @@ import com.kosuri.stores.model.response.CreateStoreResponse;
 import com.kosuri.stores.model.response.UpdateStoreResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ public class StoreController {
 
     @PostMapping("/create")
     CreateStoreResponse createStore(@Valid @RequestBody CreateStoreRequest request) {
-        CreateStoreResponse createStoreResponse = new CreateStoreResponse();
+        CreateStoreResponse createStoreResponse = new CreateStoreResponse(HttpStatus.OK);
 
         createStoreResponse.setId(storeHandler.addStore(request));
         return createStoreResponse;
@@ -28,7 +29,7 @@ public class StoreController {
 
     @PostMapping("/update")
     UpdateStoreResponse updateStore(@Valid @RequestBody UpdateStoreRequest request) {
-        UpdateStoreResponse updateStoreResponse = new UpdateStoreResponse();
+        UpdateStoreResponse updateStoreResponse = new UpdateStoreResponse(HttpStatus.OK);
 
         updateStoreResponse.setId(storeHandler.updateStore(request));
         return updateStoreResponse;

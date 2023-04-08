@@ -1,9 +1,9 @@
 package com.kosuri.stores.controller;
 
-import com.kosuri.stores.handler.PurchaseHandler;
 import com.kosuri.stores.handler.RepositoryHandler;
+import com.kosuri.stores.handler.SaleHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,17 +14,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
-@RequestMapping("/purchase")
-public class PurchaseController {
+@RequestMapping("/sale")
+public class SaleController {
     @Autowired
     private RepositoryHandler repositoryHandler;
     @Autowired
-    private PurchaseHandler purchaseHandler;
+    private SaleHandler saleHandler;
     @PostMapping("/import")
     public void mapReapExcelDatatoDB(@RequestParam("file") MultipartFile reapExcelDataFile,
                                      @RequestParam("store_id") String storeId) throws Exception {
-        purchaseHandler.createPurchaseEntityFromRequest(reapExcelDataFile, storeId);
+        saleHandler.createSaleEntityFromRequest(reapExcelDataFile, storeId);
     }
-
-
 }

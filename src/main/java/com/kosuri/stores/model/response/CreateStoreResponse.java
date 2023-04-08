@@ -1,13 +1,20 @@
 package com.kosuri.stores.model.response;
 
-public class CreateStoreResponse {
-    private int id;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 
-    public int getId() {
+public class CreateStoreResponse extends ResponseEntity<CreateStoreResponse> {
+    public CreateStoreResponse(HttpStatusCode status) {
+        super(status);
+    }
+
+    private String id;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 }
