@@ -37,6 +37,7 @@ public class SearchHandler {
                     searchResult.setMedicineName(stockEntity.getItemName());
                     searchResult.setMrp(stockEntity.getMrpPack());
                     searchResult.setShopLocation(storeEntity.getLocation());
+                    searchResult.setShopName(storeEntity.getName());
 
                     searchResultList.add(searchResult);
                 }
