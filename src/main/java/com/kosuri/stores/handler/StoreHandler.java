@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class StoreHandler {
     @Autowired
     private RepositoryHandler repositoryHandler;
-    public int addStore(CreateStoreRequest createStoreRequest){
+    public String addStore(CreateStoreRequest createStoreRequest){
         StoreEntity storeEntity = createStoreEntityFromRequest(createStoreRequest);
 
         repositoryHandler.addStoreToRepository(storeEntity);
@@ -21,7 +21,7 @@ public class StoreHandler {
         return storeEntity.getId();
     }
 
-    public int updateStore(UpdateStoreRequest updateStoreRequest){
+    public String updateStore(UpdateStoreRequest updateStoreRequest){
         StoreEntity storeEntity = updateStoreEntityFromRequest(updateStoreRequest);
 
         repositoryHandler.updateStore(storeEntity);
