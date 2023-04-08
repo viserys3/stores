@@ -44,7 +44,7 @@ public class StockHandler {
             StockEntity s = new StockEntity();
             s.setItemName(stockUpdateRequest.getItemName());
             s.setBatch(stockUpdateRequest.getBatch());
-            s.setManufacturer(stock.getManufacturer());
+            s.setManufacturer(stockUpdateRequest.getManufacturer());
             s.setMfName(stockUpdateRequest.getMfName());
             s.setSupplierName(stockUpdateRequest.getSupplierName());
             s.setItemCode(stockUpdateRequest.getItemCode());

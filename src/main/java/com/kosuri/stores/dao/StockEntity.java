@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 
+import java.util.Date;
+
 @Table(name = "stock_pharma_detail")
 @Entity
 @IdClass(StockId.class)
@@ -13,7 +15,7 @@ public class StockEntity {
 
     @Column(name = "MF")
     @Id
-    private Integer manufacturer;
+    private String manufacturer;
 
     @Column(name = "Mf_Name")
     @Id
@@ -39,7 +41,7 @@ public class StockEntity {
     private String batch;
 
     @Column(name = "Expiry_Date")
-    private String expiryDate;
+    private Date expiryDate;
 
     @Column(name = "Bal_Qty")
     private Double balQuantity;
@@ -69,11 +71,11 @@ public class StockEntity {
     @Id
     private String storeId;
 
-    public Integer getManufacturer() {
+    public String getManufacturer() {
         return manufacturer;
     }
 
-    public void setManufacturer(Integer manufacturer) {
+    public void setManufacturer(String manufacturer) {
         this.manufacturer = manufacturer;
     }
 
@@ -125,11 +127,11 @@ public class StockEntity {
         this.batch = batch;
     }
 
-    public String getExpiryDate() {
+    public Date getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(String expiryDate) {
+    public void setExpiryDate(Date expiryDate) {
         this.expiryDate = expiryDate;
     }
 
