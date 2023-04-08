@@ -23,7 +23,6 @@ public class PurchaseEntity {
     @Column(name="Bill_No",nullable = true, length = 45)
     private String billNo;
 
-
     @Column(name="Bill_Date",nullable = true, length = 45)
     private Date billDt;
     @Column(name="Item_Code",nullable = true, length = 45)

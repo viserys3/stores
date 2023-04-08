@@ -12,6 +12,7 @@ public class StoreEntity {
     @NotNull
     private @Column(name = "Store_Category") String type;
     @Id
+    @NotNull
     private @Column(name = "Store_ID") String id;
     @NotNull
     private @Column(name = "Store_Name") String name;
