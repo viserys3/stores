@@ -1,9 +1,6 @@
 package com.kosuri.stores.handler;
 
-import com.kosuri.stores.dao.PurchaseEntity;
-import com.kosuri.stores.dao.PurchaseRepository;
-import com.kosuri.stores.dao.StoreEntity;
-import com.kosuri.stores.dao.StoreRepository;
+import com.kosuri.stores.dao.*;
 import com.kosuri.stores.model.Store;
 import com.kosuri.stores.model.request.AddUserRequest;
 import com.kosuri.stores.model.request.LoginUserRequest;
@@ -23,6 +20,9 @@ public class RepositoryHandler {
     private StoreRepository storeRepository;
     @Autowired
     private PurchaseRepository purchaseRepository;
+
+    @Autowired
+    private SaleRepository saleRepository;
 
     public void addStoreToRepository(@Valid StoreEntity storeEntity){
         long stores = storeRepository.count();
@@ -63,6 +63,10 @@ public class RepositoryHandler {
 
     public Optional<List<PurchaseEntity>> getPurchaseRecordsByStore(String storeId){
         return purchaseRepository.findByStoreId(storeId);
+    }
+
+    public Optional<List<SaleEntity>> getSaleRecordsByStore(String storeId){
+        return saleRepository.findByStoreId(storeId);
     }
 
     public boolean validateuser(AddUserRequest request){
