@@ -1,6 +1,7 @@
 package com.kosuri.stores.handler;
 
 import com.kosuri.stores.dao.*;
+import com.kosuri.stores.exception.APIException;
 import com.kosuri.stores.model.request.ConfigureLoyaltyPointsRequest;
 import com.kosuri.stores.model.request.CustomerLoyaltyRequest;
 import com.kosuri.stores.model.request.RedeemLoyaltyPointsRequest;
@@ -24,8 +25,10 @@ public class LoyaltyPointsHandler {
     @Autowired
     CustomerLoyaltyRepository customerLoyaltyRepository;
 
-    public ConfigureLoyaltyPointsResponse configureLoyaltyPoints(ConfigureLoyaltyPointsRequest request) {
+    public ConfigureLoyaltyPointsResponse configureLoyaltyPoints(ConfigureLoyaltyPointsRequest request) throws Exception {
         LoyaltyEntity loyaltyEntity = new LoyaltyEntity();
+        ConfigureLoyaltyPointsResponse response = new ConfigureLoyaltyPointsResponse();
+
         loyaltyEntity.setStoreId(request.getStoreId());
         loyaltyEntity.setSalesVolume(request.getSalesVolume());
         loyaltyEntity.setLoyaltyPoints(request.getLoyaltyPoints());
@@ -33,20 +36,19 @@ public class LoyaltyPointsHandler {
         loyaltyEntity.setMinLoyaltyPoints(request.getMinLoyaltyPoints());
 
         Double totalSalesVolume = request.getMinLoyaltyPoints()*(request.getSalesVolume()/request.getLoyaltyPoints());
-        Double totalDiscountPercentage = request.getMinLoyaltyPoints()/100D;
-        Double totalDiscount = totalSalesVolume * totalDiscountPercentage;
+        Double totalDiscountPercentage = request.getFixedDiscountPercentage() * request.getMinLoyaltyPoints()/100D;
+        Double totalDiscount = (totalSalesVolume * totalDiscountPercentage)/100;
         loyaltyEntity.setTotalSalesVolume(totalSalesVolume);
 
         loyaltyRepository.save(loyaltyEntity);
 
-        ConfigureLoyaltyPointsResponse response = new ConfigureLoyaltyPointsResponse();
         response.setTotalSalesVolume(totalSalesVolume);
         response.setTotalDiscount(totalDiscount);
 
         return response;
     }
 
-    public void redeemLoyaltyPointsForCustomer(RedeemLoyaltyPointsRequest request) {
+    public void redeemLoyaltyPointsForCustomer(RedeemLoyaltyPointsRequest request) throws Exception {
         CustomerLoyaltyEntity customerLoyaltyEntity = new CustomerLoyaltyEntity();
         customerLoyaltyEntity.setLoyaltyPoints(request.getLoyaltyPoints());
         customerLoyaltyEntity.setCustomerName(request.getFirstName());
@@ -59,8 +61,10 @@ public class LoyaltyPointsHandler {
     }
 
     public CustomerLoyaltyResponse getDiscountForCustomer(CustomerLoyaltyRequest request) throws Exception {
-        Optional<CustomerLoyaltyEntity> customerLoyaltyEntityOptional = customerLoyaltyRepository.findByCustomerNameAndCustomerPhoneFirstByOrderByDiscountedDateDsc(request.getCustomerName(), request.getCustomerPhone());
+        Optional<CustomerLoyaltyEntity> customerLoyaltyEntityOptional = customerLoyaltyRepository.findByCustomerNameAndCustomerPhoneAndFirstByOrderByDiscountedDateDsc(request.getCustomerName(), request.getCustomerPhone());
         CustomerLoyaltyResponse response = new CustomerLoyaltyResponse();
+        response.setFirstName(request.getCustomerName());
+        response.setPhoneNumber(request.getCustomerPhone());
 
         if (customerLoyaltyEntityOptional.isPresent()) {
             CustomerLoyaltyEntity customerLoyaltyEntity = customerLoyaltyEntityOptional.get();
@@ -69,7 +73,7 @@ public class LoyaltyPointsHandler {
 
             Optional<LoyaltyEntity> storeLoyaltyOptional = loyaltyRepository.findById(request.getStoreId());
             if (storeLoyaltyOptional.isEmpty()) {
-                throw new Exception("Loyalty points are not configured for the store");
+                throw new APIException("No loyalty points configured for this store");
             }
 
             LoyaltyEntity storeLoyalty = storeLoyaltyOptional.get();
@@ -80,16 +84,14 @@ public class LoyaltyPointsHandler {
 
             if (pointsEarned > storeLoyalty.getMinLoyaltyPoints()) {
                 totalDiscPercentage = storeLoyalty.getFixedDiscountPercentage() * (pointsEarned / 100);
-                totalDiscountAmount = totalDiscPercentage * totalSaleAfterDate;
+                totalDiscountAmount = (totalDiscPercentage * totalSaleAfterDate)/100;
             }
 
             response.setLoyaltyPoints(pointsEarned.intValue());
             response.setDiscountEligible(totalDiscountAmount);
             response.setTotalSalesVolume(totalSaleAfterDate);
-
-            return response;
         }
 
-        return null;
+        return response;
     }
 }

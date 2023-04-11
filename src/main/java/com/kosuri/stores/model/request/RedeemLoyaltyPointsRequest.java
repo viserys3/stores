@@ -1,21 +1,16 @@
 package com.kosuri.stores.model.request;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Date;
 
 public class RedeemLoyaltyPointsRequest {
 
+    @NotNull
     private Date dateOfDiscount;
     private String firstName;
     private String lastName;
-
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
-    }
-
+    private Double discountAmount;
     private String customerPhone;
 
     private Double totalSales;
@@ -70,5 +65,11 @@ public class RedeemLoyaltyPointsRequest {
         this.discountAmount = discountAmount;
     }
 
-    private Double discountAmount;
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
 }

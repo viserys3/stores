@@ -1,13 +1,13 @@
 package com.kosuri.stores.model.response;
 
-public class CustomerLoyaltyResponse {
+public class CustomerLoyaltyResponse extends GenericResponse {
     private String firstName;
     private String lastName;
     private String phoneNumber;
-    private Double totalSalesVolume;
+    private Double totalSalesVolume = 0D;
 
-    private Integer loyaltyPoints;
-    private Double discountEligible;
+    private Integer loyaltyPoints = 0;
+    private Double discountEligible = 0D;
 
     public String getFirstName() {
         return firstName;

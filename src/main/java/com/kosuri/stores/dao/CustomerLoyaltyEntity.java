@@ -1,6 +1,7 @@
 package com.kosuri.stores.dao;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
 import java.util.Date;
 
 @Entity
@@ -18,6 +19,7 @@ public class CustomerLoyaltyEntity {
     }
 
     @Column(name = "Customer_Phone")
+    @Id
     private String customerPhone;
 
     @Column(name = "Total_Sales")

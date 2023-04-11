@@ -1,4 +1,4 @@
 package com.kosuri.stores.model.response;
 
-public class RedeemLoyaltyPointsResponse {
+public class RedeemLoyaltyPointsResponse extends GenericResponse {
 }
