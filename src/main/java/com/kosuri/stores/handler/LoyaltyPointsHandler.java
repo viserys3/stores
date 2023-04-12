@@ -89,7 +89,7 @@ public class LoyaltyPointsHandler {
         if (customerLoyaltyEntityOptional.isPresent()) {
             CustomerLoyaltyEntity customerLoyaltyEntity = customerLoyaltyEntityOptional.get();
             Date lastDiscountDate = customerLoyaltyEntity.getDiscountedDate();
-            Double totalSaleAfterDate = saleRepository.findTotalSalesForCustomerAfterDate(request.getFirstName(), lastDiscountDate);
+            Double totalSaleAfterDate = saleRepository.findTotalSalesForCustomerAfterDate(name, lastDiscountDate);
 
             Optional<LoyaltyEntity> storeLoyaltyOptional = loyaltyRepository.findById(request.getStoreId());
             if (storeLoyaltyOptional.isEmpty()) {
