@@ -1,23 +1,15 @@
 package com.kosuri.stores.handler;
 
-import com.kosuri.stores.dao.PurchaseEntity;
-import com.kosuri.stores.dao.PurchaseRepository;
-import com.kosuri.stores.dao.StoreEntity;
-import com.kosuri.stores.dao.StoreRepository;
+import com.kosuri.stores.dao.*;
 import com.kosuri.stores.exception.APIException;
-import com.kosuri.stores.model.Store;
 import com.kosuri.stores.model.request.AddUserRequest;
 import com.kosuri.stores.model.request.LoginUserRequest;
-import com.kosuri.stores.model.request.AddUserRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class RepositoryHandler {
@@ -25,6 +17,9 @@ public class RepositoryHandler {
     private StoreRepository storeRepository;
     @Autowired
     private PurchaseRepository purchaseRepository;
+
+    @Autowired
+    private SaleRepository saleRepository;
 
     public StoreEntity addStoreToRepository(@Valid StoreEntity storeEntity) throws Exception {
         Optional<StoreEntity> store = storeRepository.findById(storeEntity.getId());
@@ -56,6 +51,15 @@ public class RepositoryHandler {
         storeRepository.save(store.get());
         storeRepository.save(storeEntity);
 
+    }
+
+
+    public Optional<List<PurchaseEntity>> getPurchaseRecordsByStore(String storeId){
+        return purchaseRepository.findByStoreId(storeId);
+    }
+
+    public Optional<List<SaleEntity>> getSaleRecordsByStore(String storeId){
+        return saleRepository.findByStoreId(storeId);
     }
 
     public boolean validateuser(AddUserRequest request) throws Exception{
@@ -91,7 +95,4 @@ public class RepositoryHandler {
         throw new APIException("Invalid Credentials!");
     }
 
-    public Optional<List<PurchaseEntity>> getPurchaseRecordsByStore(String storeId){
-        return purchaseRepository.findByStoreId(storeId);
-    }
 }
