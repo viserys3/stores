@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "role_management")
 public class TaskEntity {
 
+    @Id
     @Column(name="Task_ID")
     private Integer taskId;
 

@@ -6,7 +6,8 @@ import jakarta.persistence.*;
 @Table(name = "role_pharma")
 public class RoleEntity {
 
-    @Column(name="RoleId")
+    @Id
+    @Column(name="Roleid")
     private Integer roleId;
 
     @Column(name="Role_Name",nullable = true, length = 45)
