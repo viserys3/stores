@@ -52,7 +52,7 @@ public class SaleHandler {
             tempSale.setBrandName(row.getCell(16).getStringCellValue());
             tempSale.setPacking(row.getCell(17).getStringCellValue());
             tempSale.setQtyBox(row.getCell(18).getNumericCellValue());
-            tempSale.setQty((int)row.getCell(19).getNumericCellValue());
+            tempSale.setQty(row.getCell(19).getNumericCellValue());
             tempSale.setSchQty((int)row.getCell(20).getNumericCellValue());
             tempSale.setSchDisc(row.getCell(21).getNumericCellValue());
             tempSale.setSaleRate(row.getCell(22).getNumericCellValue());
@@ -111,6 +111,7 @@ public class SaleHandler {
 //        stockUpdateRequest.setBalQuantity();
 //        stockUpdateRequest.setTotal();
         stockUpdateRequest.setQtyPerBox(saleEntity.getQtyBox());
+        stockUpdateRequest.setPackQuantity(saleEntity.getQty());
         stockUpdateRequest.setItemCode(saleEntity.getItemCode());
         stockUpdateRequest.setItemName(saleEntity.getItemName());
         stockUpdateRequest.setMfName(saleEntity.getMfacName());
