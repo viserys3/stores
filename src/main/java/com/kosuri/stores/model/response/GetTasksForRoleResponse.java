@@ -5,13 +5,13 @@ import com.kosuri.stores.model.role.Task;
 import java.util.List;
 
 public class GetTasksForRoleResponse extends GenericResponse {
-    private List<Task> taskEntityList;
+    private List<Task> taskList;
 
-    public List<Task> getTaskEntityList() {
-        return taskEntityList;
+    public List<Task> getTaskList() {
+        return taskList;
     }
 
-    public void setTaskEntityList(List<Task> taskEntityList) {
-        this.taskEntityList = taskEntityList;
+    public void setTaskList(List<Task> taskList) {
+        this.taskList = taskList;
     }
 }

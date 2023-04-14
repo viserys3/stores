@@ -3,7 +3,7 @@ package com.kosuri.stores.dao;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "role_management")
+@Table(name = "taks_role_mapping")
 public class TaskRoleEntity {
 
     @Id

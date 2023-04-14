@@ -6,6 +6,9 @@ import com.kosuri.stores.dao.TaskRepository;
 import com.kosuri.stores.dao.TaskRoleEntity;
 import com.kosuri.stores.dao.TaskRoleRepository;
 import com.kosuri.stores.exception.APIException;
+import com.kosuri.stores.model.request.GetTasksForRoleRequest;
+import com.kosuri.stores.model.request.MapTaskForRoleRequest;
+import com.kosuri.stores.model.response.GetAllTasksResponse;
 import com.kosuri.stores.model.response.GetTasksForRoleResponse;
 import com.kosuri.stores.model.role.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +28,17 @@ public class TaskHandler {
     private TaskRoleRepository taskRoleRepository;
 
 
-    public List<TaskEntity> getAllTasks(){
+    public GetAllTasksResponse getAllTasks(){
+        GetAllTasksResponse response = new GetAllTasksResponse();
         List<TaskEntity> taskList = new ArrayList<TaskEntity>();
         taskRepository.findAll().forEach(task -> taskList.add(task));
-        return taskList;
+        response.setTaskList(taskList);
+        return response;
     }
 
-    public void mapTaskRoleEntityFromRequest(Integer roleId,List<Integer>taskIds,String updatedBy) throws Exception {
+    public void mapTaskRoleEntityFromRequest(MapTaskForRoleRequest request) throws Exception {
 
-        for(Integer taskId: taskIds) {
+        for(Integer taskId: request.getTaskIds()) {
             TaskRoleEntity tempTaskRole = new TaskRoleEntity();
             tempTaskRole.setTaskId(taskId);
             Optional<TaskEntity> taskEntityOptional = taskRepository.findById(taskId);
@@ -43,8 +48,8 @@ public class TaskHandler {
             }
 
             tempTaskRole.setTaskName(taskEntityOptional.get().getTaskName());
-            tempTaskRole.setRoleId(roleId);
-            tempTaskRole.setUpdatedBy(updatedBy);
+            tempTaskRole.setRoleId(request.getRoleId());
+            tempTaskRole.setUpdatedBy(request.getUpdatedBy());
             LocalDate localDate = LocalDate.now();
             tempTaskRole.setUpdatedDate(localDate.toString());
             try {
@@ -57,8 +62,8 @@ public class TaskHandler {
     }
 
 
-    public GetTasksForRoleResponse fetchAllTaskOfRole(Integer roleId) {
-        List<TaskRoleEntity> savedTaskForRole = taskRoleRepository.findByRoleId(roleId);
+    public GetTasksForRoleResponse fetchAllTaskOfRole(GetTasksForRoleRequest request) {
+        List<TaskRoleEntity> savedTaskForRole = taskRoleRepository.findByRoleId(request.getRoleId());
         List<Task> taskList = new ArrayList<>();
 
         for(TaskRoleEntity taskRoleEntity: savedTaskForRole) {
@@ -68,7 +73,7 @@ public class TaskHandler {
             taskList.add(task);
         }
         GetTasksForRoleResponse getTasksForRoleResponse = new GetTasksForRoleResponse();
-        getTasksForRoleResponse.setTaskEntityList(taskList);
+        getTasksForRoleResponse.setTaskList(taskList);
         return getTasksForRoleResponse;
 
     }

@@ -2,6 +2,7 @@ package com.kosuri.stores.handler;
 
 import com.kosuri.stores.dao.RoleEntity;
 import com.kosuri.stores.dao.RoleRepository;
+import com.kosuri.stores.model.response.GetAllRolesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
@@ -29,13 +30,12 @@ public class RoleHandler {
         }
     }
 
-
-
-
-    public List<RoleEntity> getAllRoles(){
+    public GetAllRolesResponse getAllRoles(){
+        GetAllRolesResponse response = new GetAllRolesResponse();
         List<RoleEntity> roleList = new ArrayList<RoleEntity>();
         roleRepository.findAll().forEach(role -> roleList.add(role));
-        return roleList;
+        response.setRoleList(roleList);
+        return response;
     }
 
 

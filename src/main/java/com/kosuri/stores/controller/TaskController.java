@@ -3,7 +3,12 @@ package com.kosuri.stores.controller;
 import com.kosuri.stores.dao.TaskEntity;
 import com.kosuri.stores.handler.RepositoryHandler;
 import com.kosuri.stores.handler.TaskHandler;
+import com.kosuri.stores.model.request.GetTasksForRoleRequest;
+import com.kosuri.stores.model.request.MapTaskForRoleRequest;
+import com.kosuri.stores.model.response.GetAllTasksResponse;
 import com.kosuri.stores.model.response.GetTasksForRoleResponse;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -25,25 +30,24 @@ public class TaskController {
 
 
     @GetMapping("/getAll")
-    public List<TaskEntity> getAllTasks() throws IOException {
-        return taskHandler.getAllTasks();
+    public ResponseEntity<GetAllTasksResponse> getAllTasks() {
+        GetAllTasksResponse response = new GetAllTasksResponse();
+        try {
+            response = taskHandler.getAllTasks();
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            response.setResponseMessage(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @PostMapping("/map")
-    public void mapTaskRoleEntityFromRequest() {
-        taskHandler.mapTaskRoleEntityFromRequest();
-    }
-
-
-    @GetMapping("/get")
-    public ResponseEntity<GetTasksForRoleResponse> fetchAllTaskOfRole(Integer roleId) {
+    public ResponseEntity<Object> mapTaskRoleEntityFromRequest(@Valid @RequestBody MapTaskForRoleRequest request) {
         try {
-            GetTasksForRoleResponse response = taskHandler.fetchAllTaskOfRole(roleId);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
+            taskHandler.mapTaskRoleEntityFromRequest(request);
+            return ResponseEntity.status(HttpStatus.OK).body("Mapped successfully!");
         } catch (Exception e) {
-            GetTasksForRoleResponse response = new GetTasksForRoleResponse();
-            response.setResponseMessage(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
