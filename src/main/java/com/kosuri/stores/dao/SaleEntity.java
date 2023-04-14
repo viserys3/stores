@@ -61,7 +61,7 @@ public class SaleEntity {
         this.packing = packing;
     }
     @Column(name="Qty_Box",nullable = true, length = 45)
-    private Integer qtyBox;
+    private Double qtyBox;
     @Column(name="Qty",nullable = true, length = 45)
     private Integer qty;
     @Column(name="Sch_Qty",nullable = true, length = 45)
@@ -235,10 +235,10 @@ public class SaleEntity {
     public void setBrandName(String brandName) {
         this.brandName = brandName;
     }
-    public Integer getQtyBox() {
+    public Double getQtyBox() {
         return qtyBox;
     }
-    public void setQtyBox(Integer qtyBox) {
+    public void setQtyBox(Double qtyBox) {
         this.qtyBox = qtyBox;
     }
     public Integer getQty() {
