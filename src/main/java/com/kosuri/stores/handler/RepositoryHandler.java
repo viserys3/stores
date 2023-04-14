@@ -2,6 +2,7 @@ package com.kosuri.stores.handler;
 
 import com.kosuri.stores.dao.StoreEntity;
 import com.kosuri.stores.dao.StoreRepository;
+import com.kosuri.stores.exception.APIException;
 import com.kosuri.stores.model.Store;
 import com.kosuri.stores.model.request.AddUserRequest;
 import com.kosuri.stores.model.request.LoginUserRequest;
@@ -19,44 +20,39 @@ public class RepositoryHandler {
     @Autowired
     private StoreRepository storeRepository;
 
-    public void addStoreToRepository(@Valid StoreEntity storeEntity){
-        long stores = storeRepository.count();
-        System.out.println("fetching repository " + stores);
-        try {
-            storeRepository.save(storeEntity);
-        }catch(Exception e){
-            System.out.println(e.getCause());
+    public StoreEntity addStoreToRepository(@Valid StoreEntity storeEntity) throws Exception {
+        Optional<StoreEntity> store = storeRepository.findById(storeEntity.getId());
+        if (store.isPresent()) {
+            throw new APIException("Store with this id is already present");
         }
+        return storeRepository.save(storeEntity);
+
     }
 
-    public void updateStore(@Valid StoreEntity storeEntity){
+    public StoreEntity updateStore(@Valid StoreEntity storeEntity) throws Exception {
         Optional<StoreEntity> store = storeRepository.findById(storeEntity.getId());
+
         if(store.isEmpty()){
             System.out.println("Entity not found");
-            return;
+            throw new APIException("Store with this id not found!");
         }
-        try {
-            storeRepository.save(storeEntity);
-        } catch(Exception e) {
-            System.out.println(e.getCause());
-        }
+
+        return storeRepository.save(storeEntity);
     }
 
-    public void addUser(@Valid StoreEntity storeEntity, AddUserRequest request) {
+    public void addUser(@Valid StoreEntity storeEntity, AddUserRequest request) throws Exception {
         //TODO Update to query based on id
-        Optional<StoreEntity> store = storeRepository.findById(123);
+        Optional<StoreEntity> store = storeRepository.findById(request.getStoreId());
         store.get().setOwner(request.getName());
         store.get().setOwnerEmail(request.getEmail());
         store.get().setOwnerContact(request.getPhoneNumber());
-        try {
-            storeRepository.save(store.get());
-            storeRepository.save(storeEntity);
-        } catch(Exception e) {
-            System.out.println(e.getCause());
-        }
+
+        storeRepository.save(store.get());
+        storeRepository.save(storeEntity);
+
     }
 
-    public boolean validateuser(AddUserRequest request){
+    public boolean validateuser(AddUserRequest request) throws Exception{
         Optional<List<StoreEntity>> existingStores = storeRepository.findByOwnerEmailOrOwnerContact(request.getEmail(), request.getPhoneNumber());
         if(existingStores.isEmpty()){
             return true;
@@ -65,17 +61,17 @@ public class RepositoryHandler {
             //TODO Update to query based on id
             if (store.getName().contains("DUMMY")){
                 System.out.println("User already exists in system");
-                return false;
+                throw new APIException("User already exists in system");
             }
         }
 
         return true;
     }
 
-    public boolean loginUser(LoginUserRequest request) {
+    public boolean loginUser(LoginUserRequest request) throws Exception {
         Optional<List<StoreEntity>> existingStores = storeRepository.findByOwnerEmailOrOwnerContact(request.getEmail(), request.getPhoneNumber());
         if (existingStores.isEmpty()) {
-            return false;
+            throw new APIException("Invalid Credentials!");
         }
 
         for (StoreEntity store : existingStores.get()) {
@@ -86,6 +82,6 @@ public class RepositoryHandler {
             }
         }
 
-        return false;
+        throw new APIException("Invalid Credentials!");
     }
 }
