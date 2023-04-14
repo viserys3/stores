@@ -7,8 +7,9 @@ import org.springframework.http.RequestEntity;
 import java.net.URI;
 import java.util.Date;
 
-public class GeneratePurchaseReportRequest extends GenerateReportRequest {
-    public GeneratePurchaseReportRequest(HttpMethod method, URI url) {
+public class GenerateReportRequest extends RequestEntity<GenerateReportRequest> {
+
+    public GenerateReportRequest(HttpMethod method, URI url) {
         super(method, url);
     }
 
