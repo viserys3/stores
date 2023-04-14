@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +53,7 @@ public class PurchaseHandler {
             tempPurchase.setDcYear(row.getCell(15).getStringCellValue());
             tempPurchase.setDcPrefix(row.getCell(16).getStringCellValue());
             tempPurchase.setDcSrno(row.getCell(17).getStringCellValue());
-            tempPurchase.setQty((int) row.getCell(18).getNumericCellValue());
+            tempPurchase.setQty(row.getCell(18).getNumericCellValue());
             tempPurchase.setPackQty(row.getCell(19).getNumericCellValue());
             tempPurchase.setLooseQty(row.getCell(20).getNumericCellValue());
             tempPurchase.setSchPackQty(row.getCell(21).getNumericCellValue());
@@ -99,8 +97,8 @@ public class PurchaseHandler {
         stockUpdateRequest.setBalLooseQuantity(purchaseEntity.getLooseQty());
         stockUpdateRequest.setBatch(purchaseEntity.getBatchNo());
         stockUpdateRequest.setStockUpdateRequestType(StockUpdateRequestType.PURCHASE);
-        stockUpdateRequest.setBalPackQuantity(purchaseEntity.getPackQty());
-        stockUpdateRequest.setBalQuantity(purchaseEntity.getPackQty()); // Check this
+        stockUpdateRequest.setQtyPerBox(purchaseEntity.getQty());
+        stockUpdateRequest.setPackQuantity(purchaseEntity.getPackQty()); // Check this
 //        stockUpdateRequest.setTotal();
         stockUpdateRequest.setItemCategory(purchaseEntity.getItemCat());
         stockUpdateRequest.setItemCode(purchaseEntity.getItemCode());
