@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -22,6 +23,7 @@ public class SaleHandler {
     private SaleRepository saleRepository;
     @Autowired
     private StockHandler stockHandler;
+    @Transactional
     public void createSaleEntityFromRequest(MultipartFile reapExcelDataFile, String storeId) throws Exception{
 
         List<SaleEntity> saleArrayList = new ArrayList<SaleEntity>();
@@ -104,14 +106,10 @@ public class SaleHandler {
     private void updateStock(SaleEntity saleEntity) {
         StockUpdateRequest stockUpdateRequest = new StockUpdateRequest();
         stockUpdateRequest.setExpiryDate(saleEntity.getExpiryDate());
-//        stockUpdateRequest.setBalLooseQuantity(saleEntity.getLooseQty());
         stockUpdateRequest.setBatch(saleEntity.getBatchNo());
         stockUpdateRequest.setStockUpdateRequestType(StockUpdateRequestType.SALE);
-//        stockUpdateRequest.setBalPackQuantity(saleEntity.getPackQty());
-//        stockUpdateRequest.setBalQuantity();
-//        stockUpdateRequest.setTotal();
         stockUpdateRequest.setQtyPerBox(saleEntity.getQtyBox());
-        stockUpdateRequest.setPackQuantity(saleEntity.getQty());
+        stockUpdateRequest.setBalLooseQuantity(saleEntity.getQty());
         stockUpdateRequest.setItemCode(saleEntity.getItemCode());
         stockUpdateRequest.setItemName(saleEntity.getItemName());
         stockUpdateRequest.setMfName(saleEntity.getMfacName());

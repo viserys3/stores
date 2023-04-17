@@ -1,11 +1,8 @@
 package com.kosuri.stores.dao;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.IdClass;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Table(name = "stock_pharma_detail")
@@ -14,7 +11,7 @@ import java.util.Date;
 public class StockEntity {
 
     @Column(name = "MF")
-    @Id
+//    @Id
     private String manufacturer;
 
     @Column(name = "Mf_Name")
@@ -22,7 +19,7 @@ public class StockEntity {
     private String mfName;
 
     @Column(name = "Item_Code")
-    @Id
+//    @Id
     private String itemCode;
 
     @Column(name = "Item_Name")
@@ -30,7 +27,7 @@ public class StockEntity {
     private String itemName;
 
     @Column(name = "Supplier_Name")
-    @Id
+//    @Id
     private String supplierName;
 
     @Column(name = "Rack")
@@ -58,6 +55,9 @@ public class StockEntity {
     @Column(name = "Mrp_Pack")
     private Double mrpPack;
 
+    @Column(name = "Pur_Rate_Pack_After_GST")
+    private Double purRatePerPackAfterGST;
+
     @Column(name = "Mrp_Value")
     private Double mrpValue;
 
@@ -70,6 +70,19 @@ public class StockEntity {
     @Column(name = "Store_ID")
     @Id
     private String storeId;
+
+    @Column(name = "Stock_Value_Mrp")
+    private Double stockValueMrp;
+
+    @Column(name = "Stock_Value_Purrate")
+    private Double stockValuePurrate;
+
+    @Column(name = "Updated_By")
+    private String updatedBy;
+
+    @Column(name = "Updated_Date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime updatedAt;
 
     public String getManufacturer() {
         return manufacturer;
@@ -205,6 +218,46 @@ public class StockEntity {
 
     public void setStoreId(String storeId) {
         this.storeId = storeId;
+    }
+
+    public Double getStockValueMrp() {
+        return stockValueMrp;
+    }
+
+    public void setStockValueMrp(Double stockValueMrp) {
+        this.stockValueMrp = stockValueMrp;
+    }
+
+    public Double getStockValuePurrate() {
+        return stockValuePurrate;
+    }
+
+    public void setStockValuePurrate(Double stockValuePurrate) {
+        this.stockValuePurrate = stockValuePurrate;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Double getPurRatePerPackAfterGST() {
+        return purRatePerPackAfterGST;
+    }
+
+    public void setPurRatePerPackAfterGST(Double purRatePerPackAfterGST) {
+        this.purRatePerPackAfterGST = purRatePerPackAfterGST;
     }
 }
 

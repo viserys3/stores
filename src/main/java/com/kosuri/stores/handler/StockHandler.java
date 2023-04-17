@@ -3,10 +3,13 @@ package com.kosuri.stores.handler;
 
 import com.kosuri.stores.dao.StockEntity;
 import com.kosuri.stores.dao.StockRepository;
+import com.kosuri.stores.exception.APIException;
 import com.kosuri.stores.model.enums.StockUpdateRequestType;
 import com.kosuri.stores.model.request.StockUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 
 @Service
 public class StockHandler {
@@ -25,21 +28,34 @@ public class StockHandler {
             Double curBalQuantity = stock.getBalQuantity();
 
             if (stockUpdateRequest.getStockUpdateRequestType() == StockUpdateRequestType.PURCHASE) {
-                curBalQuantity += stockUpdateRequest.getPackQuantity() * stockUpdateRequest.getQtyPerBox();
+                curBalQuantity += stockUpdateRequest.getPackQuantity() * stockUpdateRequest.getQtyPerBox()
+                + stockUpdateRequest.getBalLooseQuantity();
             } else {
-                curBalQuantity -= stockUpdateRequest.getPackQuantity() * stockUpdateRequest.getQtyPerBox();
+                curBalQuantity -= stockUpdateRequest.getBalLooseQuantity();
             }
 
             currBalPackQuantity = curBalQuantity/stockUpdateRequest.getQtyPerBox();
             currBalLooseQuantity = curBalQuantity - (currBalPackQuantity * stockUpdateRequest.getQtyPerBox());
 
+            Double stockValueMrp = currBalPackQuantity * stockUpdateRequest.getMrpPack() + currBalLooseQuantity * (stockUpdateRequest.getMrpPack()/stockUpdateRequest.getQtyPerBox());
+            Double purRatePerPackAfterGST = stock.getPurRatePerPackAfterGST();
+            Double stockValuePurRate = currBalPackQuantity * purRatePerPackAfterGST + currBalLooseQuantity * (purRatePerPackAfterGST/stockUpdateRequest.getQtyPerBox());
+
             stock.setBalPackQuantity(currBalPackQuantity);
             stock.setBalLooseQuantity(currBalLooseQuantity);
             stock.setBalQuantity(curBalQuantity);
-            stock.setMrpValue(curBalQuantity * stock.getMrpPack());
+            stock.setMrpPack(stockUpdateRequest.getMrpPack());
+            stock.setStockValueMrp(stockValueMrp);
+            stock.setStockValuePurrate(stockValuePurRate);
+            stock.setUpdatedBy("");
+            stock.setUpdatedAt(LocalDateTime.now());
             stockRepository.save(stock);
 
         } else {
+
+//            if (stockUpdateRequest.getStockUpdateRequestType() == StockUpdateRequestType.SALE) {
+//                throw APIException("Pur")
+//            }
             StockEntity s = new StockEntity();
             s.setItemName(stockUpdateRequest.getItemName());
             s.setBatch(stockUpdateRequest.getBatch());
@@ -48,13 +64,23 @@ public class StockHandler {
             s.setSupplierName(stockUpdateRequest.getSupplierName());
             s.setItemCode(stockUpdateRequest.getItemCode());
             s.setBalLooseQuantity(stockUpdateRequest.getBalLooseQuantity());
-            s.setBalPackQuantity(stockUpdateRequest.getQtyPerBox());
-            s.setBalQuantity(stockUpdateRequest.getPackQuantity());
+            s.setBalPackQuantity(stockUpdateRequest.getPackQuantity());
+            s.setBalQuantity(stockUpdateRequest.getPackQuantity() * stockUpdateRequest.getQtyPerBox() + stockUpdateRequest.getBalLooseQuantity());
             s.setExpiryDate(stockUpdateRequest.getExpiryDate());
             s.setOnlineYesNo("Yes");
             s.setStoreId(stockUpdateRequest.getStoreId());
-            s.setMrpValue(stockUpdateRequest.getPackQuantity() * stockUpdateRequest.getMrpPack());
+            s.setMrpPack(stockUpdateRequest.getMrpPack());
+            if (stockUpdateRequest.getStockUpdateRequestType() == StockUpdateRequestType.PURCHASE) {
+                s.setPurRatePerPackAfterGST(stockUpdateRequest.getTotalPurchaseValueAfterGST()/stockUpdateRequest.getQtyPerBox());
+            }
 
+            s.setStockValueMrp(stockUpdateRequest.getPackQuantity() * stockUpdateRequest.getMrpPack()
+            + stockUpdateRequest.getBalLooseQuantity() * (stockUpdateRequest.getMrpPack()/stockUpdateRequest.getQtyPerBox()));
+
+            s.setStockValuePurrate(stockUpdateRequest.getPackQuantity() * s.getPurRatePerPackAfterGST()
+                    + stockUpdateRequest.getBalLooseQuantity() * (s.getPurRatePerPackAfterGST()/stockUpdateRequest.getQtyPerBox()));
+            stock.setUpdatedBy("");
+            stock.setUpdatedAt(LocalDateTime.now());
             stockRepository.save(s);
         }
 

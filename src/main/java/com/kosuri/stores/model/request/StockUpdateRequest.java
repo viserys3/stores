@@ -37,6 +37,16 @@ public class StockUpdateRequest {
 
     private String storeId;
 
+    private Double totalPurchaseValueAfterGST;
+
+    public Double getTotalPurchaseValueAfterGST() {
+        return totalPurchaseValueAfterGST;
+    }
+
+    public void setTotalPurchaseValueAfterGST(Double totalPurchaseValueAfterGST) {
+        this.totalPurchaseValueAfterGST = totalPurchaseValueAfterGST;
+    }
+
     public String getManufacturer() {
         return manufacturer;
     }

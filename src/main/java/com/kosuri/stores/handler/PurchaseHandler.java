@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -23,12 +24,12 @@ public class PurchaseHandler {
     @Autowired
     private StockHandler stockHandler;
 
+    @Transactional
     public void createPurchaseEntityFromRequest(MultipartFile reapExcelDataFile, String storeId) throws Exception {
 
         List<PurchaseEntity> purchaseArrayList = new ArrayList<PurchaseEntity>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
         XSSFSheet worksheet = workbook.getSheetAt(0);
-
 
         for (int i = 4; i < worksheet.getPhysicalNumberOfRows(); i++) {
             PurchaseEntity tempPurchase = new PurchaseEntity();
@@ -98,8 +99,8 @@ public class PurchaseHandler {
         stockUpdateRequest.setBatch(purchaseEntity.getBatchNo());
         stockUpdateRequest.setStockUpdateRequestType(StockUpdateRequestType.PURCHASE);
         stockUpdateRequest.setQtyPerBox(purchaseEntity.getQty());
-        stockUpdateRequest.setPackQuantity(purchaseEntity.getPackQty()); // Check this
-//        stockUpdateRequest.setTotal();
+        stockUpdateRequest.setPackQuantity(purchaseEntity.getPackQty());
+        stockUpdateRequest.setBalLooseQuantity(purchaseEntity.getLooseQty());
         stockUpdateRequest.setItemCategory(purchaseEntity.getItemCat());
         stockUpdateRequest.setItemCode(purchaseEntity.getItemCode());
         stockUpdateRequest.setItemName(purchaseEntity.getItemName());
@@ -107,6 +108,7 @@ public class PurchaseHandler {
         stockUpdateRequest.setManufacturer(purchaseEntity.getMfacCode());
         stockUpdateRequest.setStoreId(purchaseEntity.getStoreId());
         stockUpdateRequest.setMrpPack(purchaseEntity.getmRP());
+        stockUpdateRequest.setTotalPurchaseValueAfterGST(purchaseEntity.getTotal());
         stockUpdateRequest.setSupplierName(purchaseEntity.getSuppName());
 
         stockHandler.updateStock(stockUpdateRequest);
