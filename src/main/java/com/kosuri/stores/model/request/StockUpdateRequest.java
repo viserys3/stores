@@ -23,9 +23,9 @@ public class StockUpdateRequest {
 
     private Date expiryDate;
 
-    private Double balQuantity;
+    private Double packQuantity;
 
-    private Double balPackQuantity;
+    private Double qtyPerBox;
 
     private Double balLooseQuantity;
 
@@ -36,6 +36,16 @@ public class StockUpdateRequest {
     private String itemCategory;
 
     private String storeId;
+
+    private Double totalPurchaseValueAfterGST;
+
+    public Double getTotalPurchaseValueAfterGST() {
+        return totalPurchaseValueAfterGST;
+    }
+
+    public void setTotalPurchaseValueAfterGST(Double totalPurchaseValueAfterGST) {
+        this.totalPurchaseValueAfterGST = totalPurchaseValueAfterGST;
+    }
 
     public String getManufacturer() {
         return manufacturer;
@@ -101,20 +111,20 @@ public class StockUpdateRequest {
         this.expiryDate = expiryDate;
     }
 
-    public Double getBalQuantity() {
-        return balQuantity;
+    public Double getPackQuantity() {
+        return packQuantity;
     }
 
-    public void setBalQuantity(Double balQuantity) {
-        this.balQuantity = balQuantity;
+    public void setPackQuantity(Double packQuantity) {
+        this.packQuantity = packQuantity;
     }
 
-    public Double getBalPackQuantity() {
-        return balPackQuantity;
+    public Double getQtyPerBox() {
+        return qtyPerBox;
     }
 
-    public void setBalPackQuantity(Double balPackQuantity) {
-        this.balPackQuantity = balPackQuantity;
+    public void setQtyPerBox(Double qtyPerBox) {
+        this.qtyPerBox = qtyPerBox;
     }
 
     public Double getBalLooseQuantity() {

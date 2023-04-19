@@ -9,6 +9,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -22,6 +23,7 @@ public class SaleHandler {
     private SaleRepository saleRepository;
     @Autowired
     private StockHandler stockHandler;
+    @Transactional
     public void createSaleEntityFromRequest(MultipartFile reapExcelDataFile, String storeId) throws Exception{
 
         List<SaleEntity> saleArrayList = new ArrayList<SaleEntity>();
@@ -51,8 +53,8 @@ public class SaleHandler {
             tempSale.setCatName(row.getCell(15).getStringCellValue());
             tempSale.setBrandName(row.getCell(16).getStringCellValue());
             tempSale.setPacking(row.getCell(17).getStringCellValue());
-            tempSale.setQtyBox((int)row.getCell(18).getNumericCellValue());
-            tempSale.setQty((int)row.getCell(19).getNumericCellValue());
+            tempSale.setQtyBox(row.getCell(18).getNumericCellValue());
+            tempSale.setQty(row.getCell(19).getNumericCellValue());
             tempSale.setSchQty((int)row.getCell(20).getNumericCellValue());
             tempSale.setSchDisc(row.getCell(21).getNumericCellValue());
             tempSale.setSaleRate(row.getCell(22).getNumericCellValue());
@@ -104,12 +106,10 @@ public class SaleHandler {
     private void updateStock(SaleEntity saleEntity) {
         StockUpdateRequest stockUpdateRequest = new StockUpdateRequest();
         stockUpdateRequest.setExpiryDate(saleEntity.getExpiryDate());
-//        stockUpdateRequest.setBalLooseQuantity(saleEntity.getLooseQty());
         stockUpdateRequest.setBatch(saleEntity.getBatchNo());
         stockUpdateRequest.setStockUpdateRequestType(StockUpdateRequestType.SALE);
-//        stockUpdateRequest.setBalPackQuantity(saleEntity.getPackQty());
-//        stockUpdateRequest.setBalQuantity();
-//        stockUpdateRequest.setTotal();
+        stockUpdateRequest.setQtyPerBox(saleEntity.getQtyBox());
+        stockUpdateRequest.setBalLooseQuantity(saleEntity.getQty());
         stockUpdateRequest.setItemCode(saleEntity.getItemCode());
         stockUpdateRequest.setItemName(saleEntity.getItemName());
         stockUpdateRequest.setMfName(saleEntity.getMfacName());
