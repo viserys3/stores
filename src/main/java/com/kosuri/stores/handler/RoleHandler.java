@@ -3,7 +3,6 @@ package com.kosuri.stores.handler;
 import com.kosuri.stores.dao.RoleEntity;
 import com.kosuri.stores.dao.RoleRepository;
 import com.kosuri.stores.exception.APIException;
-import com.kosuri.stores.model.enums.Role;
 import com.kosuri.stores.model.response.GetAllRolesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,14 +17,11 @@ public class RoleHandler {
     private RoleRepository roleRepository;
 
 
-    public void createRoleEntityFromRequest(Integer roleId, Role roleName){
+    public void createRoleEntityFromRequest(Integer roleId, String roleName){
         RoleEntity roleEntity = new RoleEntity();
         roleEntity.setRoleId(roleId);
-        roleEntity.setRoleName(roleName.toString());
+        roleEntity.setRoleName(roleName);
 
-
-        long roles = roleRepository.count();
-        System.out.println("fetching repository " + roles);
         try {
             roleRepository.save(roleEntity);
         }catch(Exception e){

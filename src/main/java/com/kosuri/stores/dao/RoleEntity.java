@@ -1,6 +1,5 @@
 package com.kosuri.stores.dao;
 
-import com.kosuri.stores.model.enums.Role;
 import jakarta.persistence.*;
 
 @Entity

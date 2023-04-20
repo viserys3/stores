@@ -50,7 +50,7 @@ public class UserHandler {
         storeEntity.setOwnerContact(request.getPhoneNumber());
         storeEntity.setOwnerEmail(request.getEmail());
         storeEntity.setLocation(request.getAddress());
-        storeEntity.setRole(request.getRole().toString());
+        storeEntity.setRole(request.getRole());
         storeEntity.setPassword(request.getPassword());
 
         //setting dummy parameters.
