@@ -1,5 +1,6 @@
 package com.kosuri.stores.model.request;
 
+import com.kosuri.stores.model.enums.Role;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -16,18 +17,17 @@ public class CreateRoleRequest extends RequestEntity<CreateRoleRequest> {
 
     @NotNull
     private Integer roleId;
-    @NotNull
-    private String roleName;
+    private Role roleName;
     public Integer getRoleId() {
         return roleId;
     }
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }
-    public String getRoleName() {
+    public Role getRoleName() {
         return roleName;
     }
-    public void setRoleName(String roleName) {
+    public void setRoleName(Role roleName) {
         this.roleName = roleName;
     }
 }
