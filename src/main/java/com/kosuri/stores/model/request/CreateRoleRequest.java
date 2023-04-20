@@ -16,6 +16,7 @@ public class CreateRoleRequest extends RequestEntity<CreateRoleRequest> {
 
     @NotNull
     private Integer roleId;
+    @NotNull
     private String roleName;
     public Integer getRoleId() {
         return roleId;
