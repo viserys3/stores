@@ -2,17 +2,22 @@ package com.kosuri.stores.handler;
 
 import com.kosuri.stores.dao.PurchaseEntity;
 import com.kosuri.stores.dao.PurchaseRepository;
+import com.kosuri.stores.dao.StoreEntity;
+import com.kosuri.stores.dao.StoreRepository;
+import com.kosuri.stores.exception.APIException;
+import com.kosuri.stores.model.enums.StockUpdateRequestType;
+import com.kosuri.stores.model.request.StockUpdateRequest;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -20,12 +25,25 @@ public class PurchaseHandler {
     @Autowired
     private PurchaseRepository purchaseRepository;
 
-    public void createPurchaseEntityFromRequest(MultipartFile reapExcelDataFile) throws Exception{
+    @Autowired
+    private StockHandler stockHandler;
 
-        List<PurchaseEntity> purchaseArrayList = new ArrayList<PurchaseEntity>();
+    @Autowired
+    private StoreRepository storeRepository;
+
+    @Transactional
+    public void createPurchaseEntityFromRequest(MultipartFile reapExcelDataFile, String storeId, String emailId) throws Exception {
+
+        Optional<StoreEntity> store = storeRepository.findById(storeId);
+        if (store.isPresent()) {
+            String ownerEmail = store.get().getOwnerEmail();
+            if (!ownerEmail.equals(emailId)) {
+                throw new APIException("User does not has access to upload file");
+            }
+        }
+            List<PurchaseEntity> purchaseArrayList = new ArrayList<PurchaseEntity>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
         XSSFSheet worksheet = workbook.getSheetAt(0);
-
 
         for (int i = 4; i < worksheet.getPhysicalNumberOfRows(); i++) {
             PurchaseEntity tempPurchase = new PurchaseEntity();
@@ -50,7 +68,7 @@ public class PurchaseHandler {
             tempPurchase.setDcYear(row.getCell(15).getStringCellValue());
             tempPurchase.setDcPrefix(row.getCell(16).getStringCellValue());
             tempPurchase.setDcSrno(row.getCell(17).getStringCellValue());
-            tempPurchase.setQty((int) row.getCell(18).getNumericCellValue());
+            tempPurchase.setQty(row.getCell(18).getNumericCellValue());
             tempPurchase.setPackQty(row.getCell(19).getNumericCellValue());
             tempPurchase.setLooseQty(row.getCell(20).getNumericCellValue());
             tempPurchase.setSchPackQty(row.getCell(21).getNumericCellValue());
@@ -76,14 +94,37 @@ public class PurchaseHandler {
             tempPurchase.setCessAmt(row.getCell(41).getNumericCellValue());
             tempPurchase.setTotal(row.getCell(42).getNumericCellValue());
             tempPurchase.setPost(String.valueOf(row.getCell(43).getNumericCellValue()));
+            tempPurchase.setStoreId(storeId);
 
             purchaseArrayList.add(tempPurchase);
         }
 
-        try {
-            purchaseRepository.saveAll(purchaseArrayList);
-        } catch (Exception e) {
-            System.out.println(e.getCause());
+        purchaseRepository.saveAll(purchaseArrayList);
+
+        for(PurchaseEntity purchaseEntity: purchaseArrayList) {
+            updateStock(purchaseEntity);
         }
+    }
+
+    private void updateStock(PurchaseEntity purchaseEntity) {
+        StockUpdateRequest stockUpdateRequest = new StockUpdateRequest();
+        stockUpdateRequest.setExpiryDate(purchaseEntity.getExpiryDate());
+        stockUpdateRequest.setBalLooseQuantity(purchaseEntity.getLooseQty());
+        stockUpdateRequest.setBatch(purchaseEntity.getBatchNo());
+        stockUpdateRequest.setStockUpdateRequestType(StockUpdateRequestType.PURCHASE);
+        stockUpdateRequest.setQtyPerBox(purchaseEntity.getQty());
+        stockUpdateRequest.setPackQuantity(purchaseEntity.getPackQty());
+        stockUpdateRequest.setBalLooseQuantity(purchaseEntity.getLooseQty());
+        stockUpdateRequest.setItemCategory(purchaseEntity.getItemCat());
+        stockUpdateRequest.setItemCode(purchaseEntity.getItemCode());
+        stockUpdateRequest.setItemName(purchaseEntity.getItemName());
+        stockUpdateRequest.setMfName(purchaseEntity.getMfacName());
+        stockUpdateRequest.setManufacturer(purchaseEntity.getMfacCode());
+        stockUpdateRequest.setStoreId(purchaseEntity.getStoreId());
+        stockUpdateRequest.setMrpPack(purchaseEntity.getmRP());
+        stockUpdateRequest.setTotalPurchaseValueAfterGST(purchaseEntity.getTotal());
+        stockUpdateRequest.setSupplierName(purchaseEntity.getSuppName());
+
+        stockHandler.updateStock(stockUpdateRequest);
     }
 }

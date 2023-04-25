@@ -8,25 +8,33 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class StoreHandler {
     @Autowired
     private RepositoryHandler repositoryHandler;
-    public int addStore(CreateStoreRequest createStoreRequest){
-        StoreEntity storeEntity = createStoreEntityFromRequest(createStoreRequest);
-
-        repositoryHandler.addStoreToRepository(storeEntity);
-
+    public String addStore(CreateStoreRequest createStoreRequest) throws Exception{
+        StoreEntity storeEntity = repositoryHandler.addStoreToRepository(createStoreEntityFromRequest(createStoreRequest));
         return storeEntity.getId();
     }
 
-    public int updateStore(UpdateStoreRequest updateStoreRequest){
-        StoreEntity storeEntity = updateStoreEntityFromRequest(updateStoreRequest);
-
-        repositoryHandler.updateStore(storeEntity);
-
+    public String updateStore(UpdateStoreRequest updateStoreRequest) throws Exception {
+        StoreEntity storeEntity = repositoryHandler.updateStore(updateStoreEntityFromRequest(updateStoreRequest));
         return storeEntity.getId();
+    }
+
+    public List<StoreEntity> getAllStores() throws Exception{
+        List<StoreEntity> storeEntities = repositoryHandler.getAllStores();
+
+        List<StoreEntity> stores = new ArrayList<>();
+        for(StoreEntity store: storeEntities){
+            if(store.getId() != "DUMMY"){
+                stores.add(store);
+            }
+        }
+        return stores;
     }
 
     private StoreEntity createStoreEntityFromRequest(CreateStoreRequest createStoreRequest){
@@ -34,8 +42,7 @@ public class StoreHandler {
         StoreEntity storeEntity = new StoreEntity();
         storeEntity.setName(createStoreRequest.getName());
         storeEntity.setId(createStoreRequest.getId());
-        storeEntity.setType("PHARMACY");
-        storeEntity.setPincode(createStoreRequest.getPincode());
+        storeEntity.setType(createStoreRequest.getStoreType());
         storeEntity.setPincode(createStoreRequest.getPincode());
         storeEntity.setDistrict(createStoreRequest.getDistrict());
         storeEntity.setState(createStoreRequest.getState());
@@ -49,10 +56,10 @@ public class StoreHandler {
         storeEntity.setModifiedBy("test_user");
         storeEntity.setModifiedDate(LocalDate.now().toString());
         storeEntity.setModifiedTimeStamp(LocalDateTime.now().toString());
-        storeEntity.setStatus("OPEN");
+        storeEntity.setStatus("Active");
         storeEntity.setPassword("test");
         storeEntity.setAddedBy(createStoreRequest.getOwner());
-        storeEntity.setLocation("abcd");
+        storeEntity.setLocation(createStoreRequest.getLocation());
 
         return storeEntity;
     }
@@ -62,7 +69,7 @@ public class StoreHandler {
         StoreEntity storeEntity = new StoreEntity();
         storeEntity.setName(request.getName());
         storeEntity.setId(request.getId());
-        storeEntity.setType("PHARMACY");
+        storeEntity.setType(request.getStoreType());
         storeEntity.setPincode(request.getPincode());
         storeEntity.setPincode(request.getPincode());
         storeEntity.setDistrict(request.getDistrict());
@@ -77,10 +84,10 @@ public class StoreHandler {
         storeEntity.setModifiedBy("test_user");
         storeEntity.setModifiedDate(LocalDate.now().toString());
         storeEntity.setModifiedTimeStamp(LocalDateTime.now().toString());
-        storeEntity.setStatus("OPEN");
+        storeEntity.setStatus(request.getStatus());
         storeEntity.setPassword("test");
         storeEntity.setAddedBy(request.getOwner());
-        storeEntity.setLocation("abcd");
+        storeEntity.setLocation(request.getLocation());
 
         return storeEntity;
     }

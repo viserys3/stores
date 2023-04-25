@@ -1,8 +1,12 @@
 package com.kosuri.stores.dao;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.util.Date;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 
 @Entity
 @Table(name = "pharma_purchase_detail")
@@ -22,7 +26,6 @@ public class PurchaseEntity {
 
     @Column(name="Bill_No",nullable = true, length = 45)
     private String billNo;
-
 
     @Column(name="Bill_Date",nullable = true, length = 45)
     private Date billDt;
@@ -55,7 +58,7 @@ public class PurchaseEntity {
     @Column(name="DC_Srno",nullable = true, length = 45)
     private String dcSrno;
     @Column(name="Qty_Box",nullable = true, length = 45)
-    private Integer qty;
+    private Double qty;
     @Column(name="Pack_Qty",nullable = true, length = 45)
     private Double packQty;
     @Column(name="Loose_Qty",nullable = true, length = 45)
@@ -110,6 +113,16 @@ public class PurchaseEntity {
     private Integer cessPer;
     @Column(name="Cess_Amt",nullable = true, length = 45)
     private Double cessAmt;
+    @Column(name="Store_ID")
+    private String storeId;
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+    public String getStoreId() {
+        return storeId;
+    }
+
 
     public String getItemCat() {
         return itemCat;
@@ -331,12 +344,12 @@ public class PurchaseEntity {
     }
 
 
-    public Integer getQty() {
+    public Double getQty() {
         return qty;
     }
 
 
-    public void setQty(Integer qty) {
+    public void setQty(Double qty) {
         this.qty = qty;
     }
 

@@ -19,6 +19,7 @@ public class SaleEntity {
     @Column(name="Read_Doc_No",nullable = true, length = 45)
     private String readableDocNo;
     @Column(name = "Date")
+    @Temporal(TemporalType.DATE)
     private Date date;
     @Column(name = "Time")
     private String time;
@@ -60,9 +61,9 @@ public class SaleEntity {
         this.packing = packing;
     }
     @Column(name="Qty_Box",nullable = true, length = 45)
-    private Integer qtyBox;
+    private Double qtyBox;
     @Column(name="Qty",nullable = true, length = 45)
-    private Integer qty;
+    private Double qty;
     @Column(name="Sch_Qty",nullable = true, length = 45)
     private int schQty;
     @Column(name="Sch_Disc",nullable = true, length = 45)
@@ -234,16 +235,16 @@ public class SaleEntity {
     public void setBrandName(String brandName) {
         this.brandName = brandName;
     }
-    public Integer getQtyBox() {
+    public Double getQtyBox() {
         return qtyBox;
     }
-    public void setQtyBox(Integer qtyBox) {
+    public void setQtyBox(Double qtyBox) {
         this.qtyBox = qtyBox;
     }
-    public Integer getQty() {
+    public Double getQty() {
         return qty;
     }
-    public void setQty(Integer qty) {
+    public void setQty(Double qty) {
         this.qty = qty;
     }
     public int getSchQty() {

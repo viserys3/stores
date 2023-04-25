@@ -1,8 +1,10 @@
 package com.kosuri.stores.controller;
 
+import com.kosuri.stores.exception.APIException;
 import com.kosuri.stores.handler.UserHandler;
 import com.kosuri.stores.model.request.AddUserRequest;
 import com.kosuri.stores.model.request.LoginUserRequest;
+import com.kosuri.stores.model.response.LoginUserResponse;
 import jakarta.validation.Valid;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +21,41 @@ public class UserController {
     @Autowired
     UserHandler userHandler;
     @PostMapping("/add")
-    public ResponseEntity<?> addUser(@Valid @RequestBody AddUserRequest request){
-        if(userHandler.addUser(request)){
-            return new ResponseEntity<>("User added sauccessfully", HttpStatus.OK);
+    public ResponseEntity<?> addUser(@Valid @RequestBody AddUserRequest request) {
+        HttpStatus httpStatus;
+        String body;
+        try {
+            userHandler.addUser(request);
+            httpStatus = HttpStatus.OK;
+            body = "User added successfully";
+        } catch (APIException e) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+            body = e.getMessage();
+        } catch (Exception e) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            body = e.getMessage();
         }
-        return new ResponseEntity<>("Error adding user", HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return new ResponseEntity<>(body, httpStatus);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@Valid @RequestBody LoginUserRequest request){
+    public ResponseEntity<LoginUserResponse> login(@Valid @RequestBody LoginUserRequest request) {
+        HttpStatus httpStatus;
+        LoginUserResponse response = new LoginUserResponse();
+        String body;
         try {
-            if (userHandler.loginUser(request)){
-                return new ResponseEntity<>("User logged in successfully", HttpStatus.OK);
-            }
-        } catch (Exception e){
-            System.out.println("Error logging in user");
+            response = userHandler.loginUser(request);
+            httpStatus = HttpStatus.OK;
+            response.setResponseMessage("User logged in successfully!");
+        } catch (APIException e) {
+            httpStatus = HttpStatus.BAD_REQUEST;
+            response.setResponseMessage(e.getMessage());
         }
-        return new ResponseEntity<>("Invalid credentials", HttpStatus.OK);
+        catch (Exception e) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            response.setResponseMessage(e.getMessage());
+        }
+        return ResponseEntity.status(httpStatus).body(response);
     }
 }

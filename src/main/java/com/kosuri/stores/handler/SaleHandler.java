@@ -1,23 +1,42 @@
 package com.kosuri.stores.handler;
-import com.kosuri.stores.dao.SaleRepository;
-import com.kosuri.stores.dao.SaleEntity;
+import com.kosuri.stores.dao.*;
+import com.kosuri.stores.exception.APIException;
+import com.kosuri.stores.model.enums.StockUpdateRequestType;
+import com.kosuri.stores.model.request.StockUpdateRequest;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 public class SaleHandler {
     @Autowired
     private SaleRepository saleRepository;
-    public void createSaleEntityFromRequest(MultipartFile reapExcelDataFile) throws Exception{
+    @Autowired
+    private StockHandler stockHandler;
+
+    @Autowired
+    private StoreRepository storeRepository;
+
+    @Transactional
+    public void createSaleEntityFromRequest(MultipartFile reapExcelDataFile, String storeId, String emailId) throws Exception{
+
+        Optional<StoreEntity> store = storeRepository.findById(storeId);
+        if (store.isPresent()) {
+            String ownerEmail = store.get().getOwnerEmail();
+            if (!ownerEmail.equals(emailId)) {
+                throw new APIException("User does not has access to upload file");
+            }
+        }
 
         List<SaleEntity> saleArrayList = new ArrayList<SaleEntity>();
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
@@ -46,8 +65,8 @@ public class SaleHandler {
             tempSale.setCatName(row.getCell(15).getStringCellValue());
             tempSale.setBrandName(row.getCell(16).getStringCellValue());
             tempSale.setPacking(row.getCell(17).getStringCellValue());
-            tempSale.setQtyBox((int)row.getCell(18).getNumericCellValue());
-            tempSale.setQty((int)row.getCell(19).getNumericCellValue());
+            tempSale.setQtyBox(row.getCell(18).getNumericCellValue());
+            tempSale.setQty(row.getCell(19).getNumericCellValue());
             tempSale.setSchQty((int)row.getCell(20).getNumericCellValue());
             tempSale.setSchDisc(row.getCell(21).getNumericCellValue());
             tempSale.setSaleRate(row.getCell(22).getNumericCellValue());
@@ -79,15 +98,38 @@ public class SaleHandler {
             tempSale.setLcCode(row.getCell(46).getStringCellValue());
             tempSale.setPurRate(row.getCell(47).getNumericCellValue());
             tempSale.setPurRateWithGsT(row.getCell(48).getNumericCellValue());
-            tempSale.setStoreId("");
+            tempSale.setStoreId(storeId);
 
             saleArrayList.add(tempSale);
         }
 
         try {
             saleRepository.saveAll(saleArrayList);
+
+            for(SaleEntity saleEntity: saleArrayList) {
+                updateStock(saleEntity);
+            }
+
         }catch(Exception e){
             System.out.println(e.getCause());
         }
+    }
+
+    private void updateStock(SaleEntity saleEntity) {
+        StockUpdateRequest stockUpdateRequest = new StockUpdateRequest();
+        stockUpdateRequest.setExpiryDate(saleEntity.getExpiryDate());
+        stockUpdateRequest.setBatch(saleEntity.getBatchNo());
+        stockUpdateRequest.setStockUpdateRequestType(StockUpdateRequestType.SALE);
+        stockUpdateRequest.setQtyPerBox(saleEntity.getQtyBox());
+        stockUpdateRequest.setBalLooseQuantity(saleEntity.getQty());
+        stockUpdateRequest.setItemCode(saleEntity.getItemCode());
+        stockUpdateRequest.setItemName(saleEntity.getItemName());
+        stockUpdateRequest.setMfName(saleEntity.getMfacName());
+        stockUpdateRequest.setManufacturer(saleEntity.getMfacCode());
+        stockUpdateRequest.setStoreId(saleEntity.getStoreId());
+        stockUpdateRequest.setMrpPack(saleEntity.getmRP());
+        stockUpdateRequest.setSupplierName(saleEntity.getSuppName());
+
+        stockHandler.updateStock(stockUpdateRequest);
     }
 }
