@@ -37,7 +37,7 @@ public class RoleController {
         }
     }
 
-    @GetMapping("/getAll")
+    @PostMapping("/getAll")
     public ResponseEntity<GetAllRolesResponse> getListOfRoles() {
         GetAllRolesResponse response = new GetAllRolesResponse();
         try {
@@ -50,7 +50,7 @@ public class RoleController {
 
     }
 
-    @GetMapping("/getTasks")
+    @PostMapping("/getTasks")
     public ResponseEntity<GetTasksForRoleResponse> fetchAllTaskOfRole(@RequestBody @Valid GetTasksForRoleRequest request) {
         try {
             GetTasksForRoleResponse response = taskHandler.fetchAllTaskOfRole(request);
