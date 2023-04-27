@@ -60,6 +60,11 @@ public class RepositoryHandler {
 
     }
 
+    public List<StoreEntity> getAllStores() throws Exception {
+        List<StoreEntity> storeEntities = storeRepository.findAll();
+        return storeEntities;
+    }
+
 
     public Optional<List<PurchaseEntity>> getPurchaseRecordsByStore(String storeId){
         return purchaseRepository.findByStoreId(storeId);
@@ -85,7 +90,7 @@ public class RepositoryHandler {
         return true;
     }
 
-    public boolean loginUser(LoginUserRequest request) throws Exception {
+    public StoreEntity loginUser(LoginUserRequest request) throws Exception {
         Optional<List<StoreEntity>> existingStores = storeRepository.findByOwnerEmailOrOwnerContact(request.getEmail(), request.getPhoneNumber());
         if (existingStores.isEmpty()) {
             throw new APIException("Invalid Credentials!");
@@ -95,7 +100,7 @@ public class RepositoryHandler {
             //TODO Update to query based on id
             if (store.getPassword().equals(request.getPassword())) {
                 System.out.println("User logged in successfully");
-                return true;
+                return store;
             }
         }
 
