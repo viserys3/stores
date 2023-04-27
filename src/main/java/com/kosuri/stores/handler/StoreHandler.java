@@ -38,8 +38,8 @@ public class StoreHandler {
                 if (store.getName().contains("DUMMY")) {
                     continue;
                 }
+                return store.getId();
             }
-            return entity.get().get(0).getId();
         }
         return "";
     }
