@@ -37,7 +37,7 @@ public class RoleController {
         }
     }
 
-    @PostMapping("/getAll")
+    @GetMapping("/getAll")
     public ResponseEntity<GetAllRolesResponse> getListOfRoles() {
         GetAllRolesResponse response = new GetAllRolesResponse();
         try {
