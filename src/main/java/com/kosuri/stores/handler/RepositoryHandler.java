@@ -24,8 +24,13 @@ public class RepositoryHandler {
 
     public StoreEntity addStoreToRepository(@Valid StoreEntity storeEntity) throws Exception {
         Optional<StoreEntity> store = storeRepository.findById(storeEntity.getId());
+        boolean storeExistsByOwnerEmail = storeRepository.existsByOwnerEmail(storeEntity.getOwnerEmail());
         if (store.isPresent()) {
             throw new APIException("Store with this id is already present");
+        }
+
+        if(storeExistsByOwnerEmail) {
+            throw new APIException("Store with owner email is already present");
         }
         return storeRepository.save(storeEntity);
 
@@ -98,7 +103,7 @@ public class RepositoryHandler {
 
         for (StoreEntity store : existingStores.get()) {
             //TODO Update to query based on id
-            if (store.getPassword().equals(request.getPassword())) {
+            if (store.getPassword().equals(request.getPassword()) && store.getName().contains("DUMMY")) {
                 System.out.println("User logged in successfully");
                 return store;
             }
