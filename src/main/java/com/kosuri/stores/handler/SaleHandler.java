@@ -28,7 +28,7 @@ public class SaleHandler {
     private StoreRepository storeRepository;
 
     @Transactional
-    public void createSaleEntityFromRequest(MultipartFile reapExcelDataFile, String storeId, String emailId) throws Exception{
+    public void createSaleEntityFromRequest(MultipartFile reapExcelDataFile, String storeId, String emailId) throws Exception {
 
         Optional<StoreEntity> store = storeRepository.findById(storeId);
         if (store.isPresent()) {
@@ -42,7 +42,7 @@ public class SaleHandler {
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
         XSSFSheet worksheet = workbook.getSheetAt(0);
 
-        for(int i=4;i<worksheet.getPhysicalNumberOfRows() ;i++) {
+        for (int i = 4; i < worksheet.getPhysicalNumberOfRows(); i++) {
             SaleEntity tempSale = new SaleEntity();
             XSSFRow row = worksheet.getRow(i);
             tempSale.setDoc_Number(row.getCell(0).getStringCellValue());
@@ -67,7 +67,7 @@ public class SaleHandler {
             tempSale.setPacking(row.getCell(17).getStringCellValue());
             tempSale.setQtyBox(row.getCell(18).getNumericCellValue());
             tempSale.setQty(row.getCell(19).getNumericCellValue());
-            tempSale.setSchQty((int)row.getCell(20).getNumericCellValue());
+            tempSale.setSchQty((int) row.getCell(20).getNumericCellValue());
             tempSale.setSchDisc(row.getCell(21).getNumericCellValue());
             tempSale.setSaleRate(row.getCell(22).getNumericCellValue());
             tempSale.setmRP(row.getCell(23).getNumericCellValue());
@@ -75,15 +75,15 @@ public class SaleHandler {
             tempSale.setDiscPerct(row.getCell(25).getNumericCellValue());
             tempSale.setDiscValue(row.getCell(26).getNumericCellValue());
             tempSale.setTaxableAmt(row.getCell(27).getNumericCellValue());
-            tempSale.setcGSTPer((int)row.getCell(28).getNumericCellValue());
+            tempSale.setcGSTPer((int) row.getCell(28).getNumericCellValue());
             tempSale.setcGSTAmt(row.getCell(29).getNumericCellValue());
-            tempSale.setsGSTPer((int)row.getCell(30).getNumericCellValue());
+            tempSale.setsGSTPer((int) row.getCell(30).getNumericCellValue());
             tempSale.setsGSTAmt(row.getCell(31).getNumericCellValue());
-            tempSale.setiGSTPer((int)row.getCell(32).getNumericCellValue());
+            tempSale.setiGSTPer((int) row.getCell(32).getNumericCellValue());
             tempSale.setiGSTAmt(row.getCell(33).getNumericCellValue());
-            tempSale.setCessPer((int)row.getCell(34).getNumericCellValue());
+            tempSale.setCessPer((int) row.getCell(34).getNumericCellValue());
             tempSale.setCessAmt(row.getCell(35).getNumericCellValue());
-            tempSale.setAddCessPer((int)row.getCell(36).getNumericCellValue());
+            tempSale.setAddCessPer((int) row.getCell(36).getNumericCellValue());
             tempSale.setAddCessAmt(row.getCell(37).getNumericCellValue());
             tempSale.setTotal(row.getCell(38).getNumericCellValue());
             tempSale.setRoundOff(row.getCell(39).getNumericCellValue());
@@ -103,19 +103,14 @@ public class SaleHandler {
             saleArrayList.add(tempSale);
         }
 
-        try {
-            saleRepository.saveAll(saleArrayList);
+        saleRepository.saveAll(saleArrayList);
 
-            for(SaleEntity saleEntity: saleArrayList) {
-                updateStock(saleEntity);
-            }
-
-        }catch(Exception e){
-            System.out.println(e.getCause());
+        for (SaleEntity saleEntity : saleArrayList) {
+            updateStock(saleEntity, emailId);
         }
     }
 
-    private void updateStock(SaleEntity saleEntity) {
+    private void updateStock(SaleEntity saleEntity, String email) throws Exception {
         StockUpdateRequest stockUpdateRequest = new StockUpdateRequest();
         stockUpdateRequest.setExpiryDate(saleEntity.getExpiryDate());
         stockUpdateRequest.setBatch(saleEntity.getBatchNo());
@@ -129,6 +124,7 @@ public class SaleHandler {
         stockUpdateRequest.setStoreId(saleEntity.getStoreId());
         stockUpdateRequest.setMrpPack(saleEntity.getmRP());
         stockUpdateRequest.setSupplierName(saleEntity.getSuppName());
+        stockUpdateRequest.setUpdatedBy(email);
 
         stockHandler.updateStock(stockUpdateRequest);
     }
