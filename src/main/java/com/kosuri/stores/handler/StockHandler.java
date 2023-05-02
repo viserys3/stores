@@ -57,9 +57,9 @@ public class StockHandler {
 
             } else {
 
-//            if (stockUpdateRequest.getStockUpdateRequestType() == StockUpdateRequestType.SALE) {
-//                throw APIException("Pur")
-//            }
+            if (stockUpdateRequest.getStockUpdateRequestType() == StockUpdateRequestType.SALE) {
+                throw new APIException(String.format("Corresponding stock entity doesn't exist for Mf Name %s, item name %s, Batch %s", stockUpdateRequest.getMfName(), stockUpdateRequest.getItemName(), stockUpdateRequest.getBatch()));
+            }
                 StockEntity s = new StockEntity();
                 s.setItemName(stockUpdateRequest.getItemName());
                 s.setBatch(stockUpdateRequest.getBatch());

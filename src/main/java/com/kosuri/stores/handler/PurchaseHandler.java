@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,7 +51,7 @@ public class PurchaseHandler {
 
             XSSFRow row = worksheet.getRow(i);
 
-            tempPurchase.setDoc_Number(String.valueOf(row.getCell(0).getNumericCellValue()));
+            tempPurchase.setDoc_Number(String.valueOf(new BigDecimal(row.getCell(0).getNumericCellValue()).toBigInteger()));
             tempPurchase.setReadableDocNo(row.getCell(1).getStringCellValue());
             tempPurchase.setDate(row.getCell(2).getDateCellValue());
             tempPurchase.setBillNo(row.getCell(3).getStringCellValue());
