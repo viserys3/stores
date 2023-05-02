@@ -5,7 +5,9 @@ import com.kosuri.stores.exception.APIException;
 import com.kosuri.stores.model.request.AddUserRequest;
 import com.kosuri.stores.model.request.LoginUserRequest;
 import com.kosuri.stores.model.response.LoginUserResponse;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,9 +30,11 @@ public class UserHandler {
             return false;
         }
         StoreEntity userStoreEntity = getEntityFromUserRequest(request);
-
-        repositoryHandler.addUser(userStoreEntity, request);
-
+        try {
+            repositoryHandler.addUser(userStoreEntity, request);
+        } catch (DataIntegrityViolationException e) {
+            throw new Exception(e.getCause().getCause().getMessage());
+        }
         return true;
     }
 
@@ -58,6 +62,7 @@ public class UserHandler {
         storeEntity.setLocation(request.getAddress());
         storeEntity.setRole(request.getRole());
         storeEntity.setPassword(request.getPassword());
+        storeEntity.setCreationTimeStamp(LocalDateTime.now().toString());
 
         //setting dummy parameters.
         if(request.getPhoneNumber() != null){

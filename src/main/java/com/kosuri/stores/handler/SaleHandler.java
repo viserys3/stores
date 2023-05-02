@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,16 +46,15 @@ public class SaleHandler {
         for (int i = 4; i < worksheet.getPhysicalNumberOfRows(); i++) {
             SaleEntity tempSale = new SaleEntity();
             XSSFRow row = worksheet.getRow(i);
-            tempSale.setDoc_Number(row.getCell(0).getStringCellValue());
+            tempSale.setDoc_Number(String.valueOf(new BigDecimal(row.getCell(0).getNumericCellValue()).toBigInteger()));
             tempSale.setReadableDocNo(row.getCell(1).getStringCellValue());
             tempSale.setDate(row.getCell(2).getDateCellValue());
-            tempSale.setTime(String.valueOf(row.getCell(3).getStringCellValue()));
+            tempSale.setTime(row.getCell(3).getDateCellValue());
             tempSale.setCustCode(row.getCell(4).getStringCellValue());
             tempSale.setCustName(row.getCell(5).getStringCellValue());
 
-
             tempSale.setPatientName(row.getCell(6).getStringCellValue());
-            tempSale.setCreatedUser(row.getCell(7).getStringCellValue());
+            tempSale.setCreatedUser(String.valueOf(row.getCell(7).getNumericCellValue()));
             tempSale.setItemCode(row.getCell(8).getStringCellValue());
             tempSale.setItemName(row.getCell(9).getStringCellValue());
             tempSale.setBatchNo(row.getCell(10).getStringCellValue());
@@ -94,7 +94,7 @@ public class SaleHandler {
             tempSale.setProfessional(row.getCell(44).getStringCellValue());
 
 
-            tempSale.setMobile(row.getCell(45).getStringCellValue());
+            tempSale.setMobile(String.valueOf(row.getCell(45).getNumericCellValue()));
             tempSale.setLcCode(row.getCell(46).getStringCellValue());
             tempSale.setPurRate(row.getCell(47).getNumericCellValue());
             tempSale.setPurRateWithGsT(row.getCell(48).getNumericCellValue());
