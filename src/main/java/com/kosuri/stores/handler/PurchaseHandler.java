@@ -46,7 +46,7 @@ public class PurchaseHandler {
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
         XSSFSheet worksheet = workbook.getSheetAt(0);
 
-        for (int i = 4; i < worksheet.getPhysicalNumberOfRows(); i++) {
+        for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
             PurchaseEntity tempPurchase = new PurchaseEntity();
 
             XSSFRow row = worksheet.getRow(i);

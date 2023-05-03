@@ -43,7 +43,7 @@ public class SaleHandler {
         XSSFWorkbook workbook = new XSSFWorkbook(reapExcelDataFile.getInputStream());
         XSSFSheet worksheet = workbook.getSheetAt(0);
 
-        for (int i = 4; i < worksheet.getPhysicalNumberOfRows(); i++) {
+        for (int i = 1; i < worksheet.getPhysicalNumberOfRows(); i++) {
             SaleEntity tempSale = new SaleEntity();
             XSSFRow row = worksheet.getRow(i);
             tempSale.setDoc_Number(String.valueOf(new BigDecimal(row.getCell(0).getNumericCellValue()).toBigInteger()));
@@ -60,11 +60,16 @@ public class SaleHandler {
             } catch (Exception e) {
                 tempSale.setItemCode(String.valueOf(row.getCell(8).getNumericCellValue()));
             }
-            tempSale.setItemName(row.getCell(9).getStringCellValue());
+            try {
+                tempSale.setItemName(row.getCell(9).getStringCellValue());
+            } catch (Exception e) {
+                tempSale.setItemName(String.valueOf(row.getCell(9).getNumericCellValue()));
+            }
+
             try {
                 tempSale.setBatchNo(row.getCell(10).getStringCellValue());
             } catch (Exception e) {
-                tempSale.setBatchNo(String.valueOf(row.getCell(10).getNumericCellValue()));
+                tempSale.setBatchNo(String.valueOf(new BigDecimal(row.getCell(10).getNumericCellValue()).toBigInteger()));
             }
             tempSale.setExpiryDate(row.getCell(11).getDateCellValue());
             tempSale.setMfacCode(row.getCell(12).getStringCellValue());
