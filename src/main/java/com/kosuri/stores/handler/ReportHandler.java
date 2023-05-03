@@ -73,15 +73,11 @@ public class ReportHandler {
     private boolean validateVendorAndProduct(GenerateReportRequest request, String vendor, String productType){
         boolean isValid = true;
 
-        if (vendor == null || request.getVendorName() == null || productType == null || request.getProductType() == null) {
+        if(request.getVendorName() != null && !request.getVendorName().equalsIgnoreCase(vendor)) {
             isValid = false;
         }
 
-        if(!vendor.equalsIgnoreCase(request.getVendorName())) {
-            isValid = false;
-        }
-
-        if (!productType.equalsIgnoreCase(request.getProductType())) {
+        if (request.getProductType() != null && !request.getProductType().equalsIgnoreCase(productType)) {
             isValid = false;
         }
 
