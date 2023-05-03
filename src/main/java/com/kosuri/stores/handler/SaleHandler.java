@@ -28,7 +28,7 @@ public class SaleHandler {
     @Autowired
     private StoreRepository storeRepository;
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class, RuntimeException.class})
     public void createSaleEntityFromRequest(MultipartFile reapExcelDataFile, String storeId, String emailId) throws Exception {
 
         Optional<StoreEntity> store = storeRepository.findById(storeId);
