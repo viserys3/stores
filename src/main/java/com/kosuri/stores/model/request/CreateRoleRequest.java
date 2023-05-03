@@ -13,7 +13,7 @@ public class CreateRoleRequest extends RequestEntity<CreateRoleRequest> {
         super(method, url);
     }
 
-
+    @NotNull
     private String roleId;
     @NotNull
     private String roleName;
