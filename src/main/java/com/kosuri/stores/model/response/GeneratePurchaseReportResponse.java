@@ -7,13 +7,8 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public class GeneratePurchaseReportResponse  extends ResponseEntity<GeneratePurchaseReportResponse> {
+public class GeneratePurchaseReportResponse  extends GenericResponse {
     private List<PurchaseReportRecord> purchaseReport;
-
-    private String msg;
-    public GeneratePurchaseReportResponse(HttpStatusCode status) {
-        super(status);
-    }
 
     public List<PurchaseReportRecord> getPurchaseReport() {
         return purchaseReport;
@@ -21,13 +16,5 @@ public class GeneratePurchaseReportResponse  extends ResponseEntity<GeneratePurc
 
     public void setPurchaseReport(List<PurchaseReportRecord> purchaseReport) {
         this.purchaseReport = purchaseReport;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 }
