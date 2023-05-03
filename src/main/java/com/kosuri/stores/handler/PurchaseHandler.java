@@ -58,7 +58,12 @@ public class PurchaseHandler {
             tempPurchase.setBillDt(row.getCell(4).getDateCellValue());
             tempPurchase.setItemCode(String.valueOf(row.getCell(5).getNumericCellValue()));
             tempPurchase.setItemName(row.getCell(6).getStringCellValue());
-            tempPurchase.setBatchNo(row.getCell(7).getStringCellValue());
+            try {
+                tempPurchase.setBatchNo(row.getCell(7).getStringCellValue());
+            } catch (Exception e) {
+                tempPurchase.setBatchNo(String.valueOf(new BigDecimal(row.getCell(7).getNumericCellValue()).toBigInteger()));
+            }
+
             tempPurchase.setExpiryDate(row.getCell(8).getDateCellValue());
             tempPurchase.setCatCode(row.getCell(9).getStringCellValue());
             tempPurchase.setCatName(row.getCell(10).getStringCellValue());
