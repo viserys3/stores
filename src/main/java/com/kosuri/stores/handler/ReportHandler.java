@@ -35,10 +35,10 @@ public class ReportHandler {
                 record.setStoreId(purchaseEntity.getStoreId());
                 record.setDate(purchaseEntity.getDate());
                 record.setVendorName(purchaseEntity.getSuppName());
-                record.setProductType(purchaseEntity.getItemCat());
+                record.setProductType(purchaseEntity.getCatName());
                 record.setBatchNo(purchaseEntity.getBatchNo());
                 record.setExpiryDate(purchaseEntity.getExpiryDate());
-                //record.setMfgDate(purchaseEntity.get);
+                record.setMfgDate(purchaseEntity.getDate());
                 record.setMrp(purchaseEntity.getmRP());
                 record.setDiscount(purchaseEntity.getDiscValue());
                 record.setGst(purchaseEntity.getcGSTAmt());
@@ -57,11 +57,11 @@ public class ReportHandler {
         boolean isValid = true;
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
-        if(request.getDateFrom() != null && entityDate.before(formatter.parse(request.getDateFrom()))){
+        if(!request.getDateFrom().isEmpty() && request.getDateFrom() != null && entityDate.before(formatter.parse(request.getDateFrom()))){
             isValid = false;
         }
 
-        if(request.getDateTo() != null && entityDate.after(formatter.parse(request.getDateTo()))){
+        if(!request.getDateTo().isEmpty() && request.getDateTo() != null && entityDate.after(formatter.parse(request.getDateTo()))){
             isValid = false;
         }
 
@@ -71,11 +71,11 @@ public class ReportHandler {
     private boolean validateVendorAndProduct(GenerateReportRequest request, String vendor, String productType){
         boolean isValid = true;
 
-        if(request.getVendorName() != null && (vendor != null &&!vendor.equals(request.getVendorName()))){
+        if(!request.getVendorName().isEmpty() && request.getVendorName() != null && (vendor != null &&!vendor.equals(request.getVendorName()))){
             isValid = false;
         }
 
-        if (request.getProductType() != null && (productType != null && !productType.equals(request.getProductType()))){
+        if (!request.getProductType().isEmpty() && request.getProductType() != null && (productType != null && !productType.equals(request.getProductType()))){
             isValid = false;
         }
 
@@ -100,7 +100,7 @@ public class ReportHandler {
                 record.setProductType(saleEntity.getCatName());
                 record.setBatchNo(saleEntity.getBatchNo());
                 record.setExpiryDate(saleEntity.getExpiryDate());
-                //record.setMfgDate(purchaseEntity.get);
+                record.setMfgDate(saleEntity.getDate());
                 record.setMrp(saleEntity.getmRP());
                 record.setDiscount(saleEntity.getDiscValue());
                 record.setGst(saleEntity.getcGSTAmt());
