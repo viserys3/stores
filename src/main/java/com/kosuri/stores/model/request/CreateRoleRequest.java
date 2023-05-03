@@ -14,14 +14,13 @@ public class CreateRoleRequest extends RequestEntity<CreateRoleRequest> {
     }
 
 
-    @NotNull
-    private Integer roleId;
+    private String roleId;
     @NotNull
     private String roleName;
-    public Integer getRoleId() {
+    public String getRoleId() {
         return roleId;
     }
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(String roleId) {
         this.roleId = roleId;
     }
     public String getRoleName() {
