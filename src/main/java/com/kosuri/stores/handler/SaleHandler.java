@@ -55,9 +55,17 @@ public class SaleHandler {
 
             tempSale.setPatientName(row.getCell(6).getStringCellValue());
             tempSale.setCreatedUser(String.valueOf(row.getCell(7).getNumericCellValue()));
-            tempSale.setItemCode(row.getCell(8).getStringCellValue());
+            try {
+                tempSale.setItemCode(row.getCell(8).getStringCellValue());
+            } catch (Exception e) {
+                tempSale.setItemCode(String.valueOf(row.getCell(8).getNumericCellValue()));
+            }
             tempSale.setItemName(row.getCell(9).getStringCellValue());
-            tempSale.setBatchNo(row.getCell(10).getStringCellValue());
+            try {
+                tempSale.setBatchNo(row.getCell(10).getStringCellValue());
+            } catch (Exception e) {
+                tempSale.setBatchNo(String.valueOf(row.getCell(10).getNumericCellValue()));
+            }
             tempSale.setExpiryDate(row.getCell(11).getDateCellValue());
             tempSale.setMfacCode(row.getCell(12).getStringCellValue());
             tempSale.setMfacName(row.getCell(13).getStringCellValue());
@@ -87,7 +95,11 @@ public class SaleHandler {
             tempSale.setAddCessAmt(row.getCell(37).getNumericCellValue());
             tempSale.setTotal(row.getCell(38).getNumericCellValue());
             tempSale.setRoundOff(row.getCell(39).getNumericCellValue());
-            tempSale.setSuppBillNo(row.getCell(40).getStringCellValue());
+            try {
+                tempSale.setSuppBillNo(row.getCell(40).getStringCellValue());
+            } catch (Exception e) {
+                tempSale.setSuppBillNo(String.valueOf(row.getCell(41).getNumericCellValue()));
+            }
 
             tempSale.setSuppCode(row.getCell(42).getStringCellValue());
             tempSale.setSuppName(row.getCell(43).getStringCellValue());
@@ -95,7 +107,12 @@ public class SaleHandler {
 
 
             tempSale.setMobile(String.valueOf(row.getCell(45).getNumericCellValue()));
-            tempSale.setLcCode(row.getCell(46).getStringCellValue());
+            try {
+                tempSale.setLcCode(row.getCell(46).getStringCellValue());
+            } catch (Exception e) {
+                tempSale.setLcCode(String.valueOf(row.getCell(46).getNumericCellValue()));
+            }
+
             tempSale.setPurRate(row.getCell(47).getNumericCellValue());
             tempSale.setPurRateWithGsT(row.getCell(48).getNumericCellValue());
             tempSale.setStoreId(storeId);

@@ -59,11 +59,11 @@ public class ReportHandler {
     private boolean validateRecord(GenerateReportRequest request, Date entityDate) throws Exception {
         boolean isValid = true;
 
-        if(request.getDateFrom() != null && entityDate.before(request.getDateFrom())){
+        if(request.getDateFrom() != null && request.getDateFrom().after(entityDate)){
             isValid = false;
         }
 
-        if(request.getDateTo() != null && entityDate.after(request.getDateTo())){
+        if(request.getDateTo() != null && request.getDateTo().before(entityDate)){
             isValid = false;
         }
 
