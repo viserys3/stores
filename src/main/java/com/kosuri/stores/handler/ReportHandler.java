@@ -2,6 +2,7 @@ package com.kosuri.stores.handler;
 
 import com.kosuri.stores.dao.PurchaseEntity;
 import com.kosuri.stores.dao.SaleEntity;
+import com.kosuri.stores.exception.APIException;
 import com.kosuri.stores.model.purchaseReport.PurchaseReportRecord;
 import com.kosuri.stores.model.purchaseReport.SaleReportRecord;
 import com.kosuri.stores.model.request.GeneratePurchaseReportRequest;
@@ -25,15 +26,13 @@ public class ReportHandler {
         Optional<List<PurchaseEntity>> purchaseRecords = repositoryHandler.getPurchaseRecordsByStore(request.getStoreId());
 
         if (!purchaseRecords.isPresent() || purchaseRecords.get().isEmpty()) {
-            GeneratePurchaseReportResponse response = new GeneratePurchaseReportResponse(HttpStatus.INTERNAL_SERVER_ERROR);
-            response.setMsg("No records found for storeId");
-            return response;
+            throw new APIException("No records found for storeId");
         }
         List<PurchaseReportRecord> purchaseReport = new ArrayList<>();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
 
         for (PurchaseEntity purchaseEntity : purchaseRecords.get()) {
-            if (validateRecord(request, purchaseEntity.getDate()) && validateVendorAndProduct(request, purchaseEntity.getSuppName(), purchaseEntity.getItemCat())) {
+            if (validateRecord(request, purchaseEntity.getDate()) && validateVendorAndProduct(request, purchaseEntity.getSuppName(), purchaseEntity.getCatName())) {
                 PurchaseReportRecord record = new PurchaseReportRecord();
                 record.setStoreId(purchaseEntity.getStoreId());
                 record.setDate(purchaseEntity.getDate());
@@ -51,7 +50,7 @@ public class ReportHandler {
                 purchaseReport.add(record);
             }
         }
-        GeneratePurchaseReportResponse response = new GeneratePurchaseReportResponse(HttpStatus.OK);
+        GeneratePurchaseReportResponse response = new GeneratePurchaseReportResponse();
         response.setPurchaseReport(purchaseReport);
 
         return response;
@@ -60,11 +59,11 @@ public class ReportHandler {
     private boolean validateRecord(GenerateReportRequest request, Date entityDate) throws Exception {
         boolean isValid = true;
 
-        if(request.getDateFrom() != null && entityDate.before(request.getDateFrom())){
+        if(request.getDateFrom() != null && request.getDateFrom().after(entityDate)){
             isValid = false;
         }
 
-        if(request.getDateTo() != null && entityDate.after(request.getDateTo())){
+        if(request.getDateTo() != null && request.getDateTo().before(entityDate)){
             isValid = false;
         }
 
@@ -74,11 +73,11 @@ public class ReportHandler {
     private boolean validateVendorAndProduct(GenerateReportRequest request, String vendor, String productType){
         boolean isValid = true;
 
-        if(request.getVendorName() != null && !vendor.equals(request.getVendorName())){
+        if(request.getVendorName() != null && !request.getVendorName().equalsIgnoreCase(vendor)) {
             isValid = false;
         }
 
-        if (request.getProductType() != null && !productType.equals(request.getProductType())){
+        if (request.getProductType() != null && !request.getProductType().equalsIgnoreCase(productType)) {
             isValid = false;
         }
 
@@ -89,9 +88,7 @@ public class ReportHandler {
         Optional<List<SaleEntity>> saleRecords = repositoryHandler.getSaleRecordsByStore(request.getStoreId());
 
         if (!saleRecords.isPresent() || saleRecords.get().isEmpty()) {
-            GenerateSaleReportResponse response = new GenerateSaleReportResponse(HttpStatus.INTERNAL_SERVER_ERROR);
-            response.setMsg("No records found for storeId");
-            return response;
+            throw new APIException("No records found for storeId");
         }
 
         List<SaleReportRecord> purchaseReport = new ArrayList<>();
@@ -116,8 +113,8 @@ public class ReportHandler {
             }
         }
 
-        GenerateSaleReportResponse response = new GenerateSaleReportResponse(HttpStatus.OK);
-        response.setPurchaseReport(purchaseReport);
+        GenerateSaleReportResponse response = new GenerateSaleReportResponse();
+        response.setSaleReport(purchaseReport);
 
         return response;
     }
