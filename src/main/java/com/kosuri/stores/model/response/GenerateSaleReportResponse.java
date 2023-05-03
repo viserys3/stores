@@ -7,13 +7,23 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
-public class GenerateSaleReportResponse extends GenericResponse {
+public class GenerateSaleReportResponse {
     private List<SaleReportRecord> saleReport;
-    public List<SaleReportRecord> getPurchaseReport() {
+    private String msg;
+
+    public List<SaleReportRecord> getSaleReport() {
         return saleReport;
     }
 
     public void setSaleReport(List<SaleReportRecord> saleReport) {
         this.saleReport = saleReport;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }
