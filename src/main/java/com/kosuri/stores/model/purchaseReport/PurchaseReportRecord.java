@@ -9,7 +9,7 @@ public class PurchaseReportRecord {
     private String storeId;
     private String batchNo;
     private Date expiryDate;
-    private String mfgDate;
+    private Date mfgDate;
     private Double mrp;
     private Double discount;
     private Double gst;
@@ -64,11 +64,11 @@ public class PurchaseReportRecord {
         this.expiryDate = expiryDate;
     }
 
-    public String getMfgDate() {
+    public Date getMfgDate() {
         return mfgDate;
     }
 
-    public void setMfgDate(String mfgDate) {
+    public void setMfgDate(Date mfgDate) {
         this.mfgDate = mfgDate;
     }
 

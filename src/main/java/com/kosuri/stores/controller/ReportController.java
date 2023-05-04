@@ -3,6 +3,7 @@ package com.kosuri.stores.controller;
 import com.kosuri.stores.exception.APIException;
 import com.kosuri.stores.handler.ReportHandler;
 import com.kosuri.stores.model.request.GeneratePurchaseReportRequest;
+import com.kosuri.stores.model.request.GenerateReportRequest;
 import com.kosuri.stores.model.request.GenerateSaleReportRequest;
 import com.kosuri.stores.model.response.GeneratePurchaseReportResponse;
 import com.kosuri.stores.model.response.GenerateSaleReportResponse;
@@ -21,40 +22,38 @@ public class ReportController {
     @Autowired
     private ReportHandler reportHandler;
     @PostMapping("/generate/purchase")
-    public ResponseEntity<GeneratePurchaseReportResponse> generatePurchaseReport(@Valid @RequestBody GeneratePurchaseReportRequest request) throws Exception {
-        GeneratePurchaseReportResponse response;
+    public ResponseEntity<GeneratePurchaseReportResponse> generatePurchaseReport(@Valid @RequestBody GeneratePurchaseReportRequest request) throws Exception{
         HttpStatus httpStatus;
+        GeneratePurchaseReportResponse resp = new GeneratePurchaseReportResponse();
         try {
-           response  = reportHandler.generatePurchaseReport(request);
-           response.setResponseMessage("Report Generated!");
-           httpStatus = HttpStatus.OK;
-        } catch (APIException e) {
-            response = new GeneratePurchaseReportResponse();
+            resp = reportHandler.generatePurchaseReport(request);
+            httpStatus = HttpStatus.OK;
+        } catch (APIException e){
             httpStatus = HttpStatus.BAD_REQUEST;
-            response.setResponseMessage(e.getMessage());
-        } catch (Exception e) {
+            resp.setMsg(e.getMessage());
+        } catch (Exception e){
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            response = new GeneratePurchaseReportResponse();
-            response.setResponseMessage(e.getMessage());
+            resp.setMsg(e.getMessage());
         }
-        return ResponseEntity.status(httpStatus).body(response);
+
+        return ResponseEntity.status(httpStatus).body(resp);
     }
 
     @PostMapping("/generate/sale")
     public ResponseEntity<GenerateSaleReportResponse> generateSaleReport(@Valid @RequestBody GenerateSaleReportRequest request) throws Exception {
-        GenerateSaleReportResponse response = new GenerateSaleReportResponse();
         HttpStatus httpStatus;
+        GenerateSaleReportResponse resp = new GenerateSaleReportResponse();
         try {
-            response = reportHandler.generateSaleReport(request);
-            response.setResponseMessage("Report generated!");
+            resp = reportHandler.generateSaleReport(request);
             httpStatus = HttpStatus.OK;
-        } catch (APIException e) {
-            response.setResponseMessage(e.getMessage());
+        } catch (APIException e){
             httpStatus = HttpStatus.BAD_REQUEST;
-        } catch (Exception e) {
-            response.setResponseMessage(e.getMessage());
+            resp.setMsg(e.getMessage());
+        } catch (Exception e){
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            resp.setMsg(e.getMessage());
         }
-        return ResponseEntity.status(httpStatus).body(response);
+
+        return ResponseEntity.status(httpStatus).body(resp);
     }
 }

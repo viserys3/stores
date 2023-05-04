@@ -2,7 +2,6 @@ package com.kosuri.stores.handler;
 
 import com.kosuri.stores.dao.PurchaseEntity;
 import com.kosuri.stores.dao.SaleEntity;
-import com.kosuri.stores.exception.APIException;
 import com.kosuri.stores.model.purchaseReport.PurchaseReportRecord;
 import com.kosuri.stores.model.purchaseReport.SaleReportRecord;
 import com.kosuri.stores.model.request.GeneratePurchaseReportRequest;
@@ -26,10 +25,9 @@ public class ReportHandler {
         Optional<List<PurchaseEntity>> purchaseRecords = repositoryHandler.getPurchaseRecordsByStore(request.getStoreId());
 
         if (!purchaseRecords.isPresent() || purchaseRecords.get().isEmpty()) {
-            throw new APIException("No records found for storeId");
+            throw new Exception("No records found for storeId");
         }
         List<PurchaseReportRecord> purchaseReport = new ArrayList<>();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
 
         for (PurchaseEntity purchaseEntity : purchaseRecords.get()) {
             if (validateRecord(request, purchaseEntity.getDate()) && validateVendorAndProduct(request, purchaseEntity.getSuppName(), purchaseEntity.getCatName())) {
@@ -37,10 +35,10 @@ public class ReportHandler {
                 record.setStoreId(purchaseEntity.getStoreId());
                 record.setDate(purchaseEntity.getDate());
                 record.setVendorName(purchaseEntity.getSuppName());
-                record.setProductType(purchaseEntity.getItemCat());
+                record.setProductType(purchaseEntity.getCatName());
                 record.setBatchNo(purchaseEntity.getBatchNo());
                 record.setExpiryDate(purchaseEntity.getExpiryDate());
-                //record.setMfgDate(purchaseEntity.get);
+                record.setMfgDate(purchaseEntity.getDate());
                 record.setMrp(purchaseEntity.getmRP());
                 record.setDiscount(purchaseEntity.getDiscValue());
                 record.setGst(purchaseEntity.getcGSTAmt());
@@ -52,18 +50,18 @@ public class ReportHandler {
         }
         GeneratePurchaseReportResponse response = new GeneratePurchaseReportResponse();
         response.setPurchaseReport(purchaseReport);
-
         return response;
     }
 
     private boolean validateRecord(GenerateReportRequest request, Date entityDate) throws Exception {
         boolean isValid = true;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
-        if(request.getDateFrom() != null && request.getDateFrom().after(entityDate)){
+        if(!request.getDateFrom().isEmpty() && request.getDateFrom() != null && entityDate.before(formatter.parse(request.getDateFrom()))){
             isValid = false;
         }
 
-        if(request.getDateTo() != null && request.getDateTo().before(entityDate)){
+        if(!request.getDateTo().isEmpty() && request.getDateTo() != null && entityDate.after(formatter.parse(request.getDateTo()))){
             isValid = false;
         }
 
@@ -73,11 +71,11 @@ public class ReportHandler {
     private boolean validateVendorAndProduct(GenerateReportRequest request, String vendor, String productType){
         boolean isValid = true;
 
-        if(request.getVendorName() != null && !request.getVendorName().equalsIgnoreCase(vendor)) {
+        if(!request.getVendorName().isEmpty() && request.getVendorName() != null && (vendor != null &&!vendor.equals(request.getVendorName()))){
             isValid = false;
         }
 
-        if (request.getProductType() != null && !request.getProductType().equalsIgnoreCase(productType)) {
+        if (!request.getProductType().isEmpty() && request.getProductType() != null && (productType != null && !productType.equals(request.getProductType()))){
             isValid = false;
         }
 
@@ -88,7 +86,7 @@ public class ReportHandler {
         Optional<List<SaleEntity>> saleRecords = repositoryHandler.getSaleRecordsByStore(request.getStoreId());
 
         if (!saleRecords.isPresent() || saleRecords.get().isEmpty()) {
-            throw new APIException("No records found for storeId");
+            throw new Exception("No records found for storeId");
         }
 
         List<SaleReportRecord> purchaseReport = new ArrayList<>();
@@ -102,7 +100,7 @@ public class ReportHandler {
                 record.setProductType(saleEntity.getCatName());
                 record.setBatchNo(saleEntity.getBatchNo());
                 record.setExpiryDate(saleEntity.getExpiryDate());
-                //record.setMfgDate(purchaseEntity.get);
+                record.setMfgDate(saleEntity.getDate());
                 record.setMrp(saleEntity.getmRP());
                 record.setDiscount(saleEntity.getDiscValue());
                 record.setGst(saleEntity.getcGSTAmt());
