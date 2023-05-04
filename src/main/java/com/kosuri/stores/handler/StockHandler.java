@@ -23,8 +23,8 @@ public class StockHandler {
 
     public void updateStock(StockUpdateRequest stockUpdateRequest) throws Exception {
         try {
-            StockEntity stock = stockRepository.findByMfNameAndItemNameAndBatchAndStoreId(
-                    stockUpdateRequest.getMfName(), stockUpdateRequest.getItemName(), stockUpdateRequest.getBatch(), stockUpdateRequest.getStoreId());
+            StockEntity stock = stockRepository.findByMfNameAndItemNameAndBatchAndStoreIdAndSupplierName(
+                    stockUpdateRequest.getMfName(), stockUpdateRequest.getItemName(), stockUpdateRequest.getBatch(), stockUpdateRequest.getStoreId(), stockUpdateRequest.getSupplierName());
 
             if (stock != null) {
                 Double currBalLooseQuantity;
