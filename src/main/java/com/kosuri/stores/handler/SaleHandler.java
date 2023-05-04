@@ -144,7 +144,7 @@ public class SaleHandler {
         stockUpdateRequest.setMfName(saleEntity.getMfacName());
         stockUpdateRequest.setManufacturer(saleEntity.getMfacCode());
         stockUpdateRequest.setStoreId(saleEntity.getStoreId());
-        stockUpdateRequest.setMrpPack(saleEntity.getmRP());
+        stockUpdateRequest.setMrpPack(saleEntity.getmRP() * saleEntity.getQtyBox());
         stockUpdateRequest.setSupplierName(saleEntity.getSuppName());
         stockUpdateRequest.setUpdatedBy(email);
 
