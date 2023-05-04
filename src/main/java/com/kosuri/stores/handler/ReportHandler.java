@@ -28,17 +28,19 @@ public class ReportHandler {
             throw new Exception("No records found for storeId");
         }
         List<PurchaseReportRecord> purchaseReport = new ArrayList<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+
 
         for (PurchaseEntity purchaseEntity : purchaseRecords.get()) {
             if (validateRecord(request, purchaseEntity.getDate()) && validateVendorAndProduct(request, purchaseEntity.getSuppName(), purchaseEntity.getCatName())) {
                 PurchaseReportRecord record = new PurchaseReportRecord();
                 record.setStoreId(purchaseEntity.getStoreId());
-                record.setDate(purchaseEntity.getDate());
+                record.setDate(formatter.format(purchaseEntity.getDate()));
                 record.setVendorName(purchaseEntity.getSuppName());
                 record.setProductType(purchaseEntity.getCatName());
                 record.setBatchNo(purchaseEntity.getBatchNo());
-                record.setExpiryDate(purchaseEntity.getExpiryDate());
-                record.setMfgDate(purchaseEntity.getDate());
+                record.setExpiryDate(formatter.format(purchaseEntity.getExpiryDate()));
+                record.setMfgDate(formatter.format(purchaseEntity.getDate()));
                 record.setMrp(purchaseEntity.getmRP());
                 record.setDiscount(purchaseEntity.getDiscValue());
                 record.setGst(purchaseEntity.getcGSTAmt());
@@ -90,17 +92,19 @@ public class ReportHandler {
         }
 
         List<SaleReportRecord> purchaseReport = new ArrayList<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+
 
         for (SaleEntity saleEntity : saleRecords.get()) {
             if (validateRecord(request, saleEntity.getDate()) && validateVendorAndProduct(request, saleEntity.getSuppName(), saleEntity.getCatName())) {
                 SaleReportRecord record = new SaleReportRecord();
                 record.setStoreId(saleEntity.getStoreId());
-                record.setDate(saleEntity.getDate());
+                record.setDate(formatter.format(saleEntity.getDate()));
                 record.setVendorName(saleEntity.getSuppName());
                 record.setProductType(saleEntity.getCatName());
                 record.setBatchNo(saleEntity.getBatchNo());
-                record.setExpiryDate(saleEntity.getExpiryDate());
-                record.setMfgDate(saleEntity.getDate());
+                record.setExpiryDate(formatter.format(saleEntity.getExpiryDate()));
+                record.setMfgDate(formatter.format(saleEntity.getDate()));
                 record.setMrp(saleEntity.getmRP());
                 record.setDiscount(saleEntity.getDiscValue());
                 record.setGst(saleEntity.getcGSTAmt());
