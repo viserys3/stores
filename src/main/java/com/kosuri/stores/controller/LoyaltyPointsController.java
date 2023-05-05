@@ -26,6 +26,7 @@ public class LoyaltyPointsController {
         ConfigureLoyaltyPointsResponse response = new ConfigureLoyaltyPointsResponse();
         try {
             response = loyaltyPointsHandler.configureLoyaltyPoints(request);
+            response.setResponseMessage("Loyalty points added successfully");
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (Exception e) {
             response.setResponseMessage(e.getMessage());
