@@ -10,7 +10,9 @@ import com.kosuri.stores.model.response.CustomerLoyaltyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -82,36 +84,44 @@ public class LoyaltyPointsHandler {
         }
 
         Optional<CustomerLoyaltyEntity> customerLoyaltyEntityOptional = customerLoyaltyRepository.findByCustomerNameAndCustomerPhoneAndFirstByOrderByDiscountedDateDsc(name, request.getCustomerPhone());
+
+        Date lastDiscountedDate;
+
+        if (customerLoyaltyEntityOptional.isPresent()) {
+            lastDiscountedDate = customerLoyaltyEntityOptional.get().getDiscountedDate();
+        } else {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
+            String dateInString = "1-Jan-1800";
+            lastDiscountedDate = formatter.parse(dateInString);
+        }
+
         CustomerLoyaltyResponse response = new CustomerLoyaltyResponse();
         response.setFirstName(request.getFirstName());
         response.setLastName(request.getLastName());
         response.setPhoneNumber(request.getCustomerPhone());
 
-        if (customerLoyaltyEntityOptional.isPresent()) {
-            CustomerLoyaltyEntity customerLoyaltyEntity = customerLoyaltyEntityOptional.get();
-            Date lastDiscountDate = customerLoyaltyEntity.getDiscountedDate();
-            Double totalSaleAfterDate = saleRepository.findTotalSalesForCustomerAfterDate(name, lastDiscountDate);
+        Double totalSaleAfterDate = saleRepository.findTotalSalesForCustomerAfterDate(name, lastDiscountedDate);
 
-            Optional<LoyaltyEntity> storeLoyaltyOptional = loyaltyRepository.findById(request.getStoreId());
-            if (storeLoyaltyOptional.isEmpty()) {
-                throw new APIException("No loyalty points configured for this store");
-            }
-
-            LoyaltyEntity storeLoyalty = storeLoyaltyOptional.get();
-
-            Long pointsEarned = Math.round((totalSaleAfterDate / storeLoyalty.getSalesVolume()) * storeLoyalty.getLoyaltyPoints());
-            Double totalDiscPercentage = 0D;
-            Double totalDiscountAmount = 0D;
-
-            if (pointsEarned > storeLoyalty.getMinLoyaltyPoints()) {
-                totalDiscPercentage = storeLoyalty.getFixedDiscountPercentage() * (pointsEarned / 100);
-                totalDiscountAmount = (totalDiscPercentage * totalSaleAfterDate)/100;
-            }
-
-            response.setLoyaltyPoints(pointsEarned.intValue());
-            response.setDiscountEligible(totalDiscountAmount);
-            response.setTotalSalesVolume(totalSaleAfterDate);
+        Optional<LoyaltyEntity> storeLoyaltyOptional = loyaltyRepository.findById(request.getStoreId());
+        if (storeLoyaltyOptional.isEmpty()) {
+            throw new APIException("No loyalty points configured for this store");
         }
+
+        LoyaltyEntity storeLoyalty = storeLoyaltyOptional.get();
+
+        Long pointsEarned = Math.round((totalSaleAfterDate / storeLoyalty.getSalesVolume()) * storeLoyalty.getLoyaltyPoints());
+        Double totalDiscPercentage = 0D;
+        Double totalDiscountAmount = 0D;
+
+        if (pointsEarned > storeLoyalty.getMinLoyaltyPoints()) {
+            totalDiscPercentage = storeLoyalty.getFixedDiscountPercentage() * (pointsEarned / 100);
+            totalDiscountAmount = (totalDiscPercentage * totalSaleAfterDate)/100;
+        }
+
+        response.setLoyaltyPoints(pointsEarned.intValue());
+        response.setDiscountEligible(totalDiscountAmount);
+        response.setTotalSalesVolume(totalSaleAfterDate);
+
 
         return response;
     }

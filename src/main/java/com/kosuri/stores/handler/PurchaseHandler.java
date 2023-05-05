@@ -96,10 +96,10 @@ public class PurchaseHandler {
             tempPurchase.setsGSTPer((int)row.getCell(37).getNumericCellValue());
             tempPurchase.setsGSTAmt(row.getCell(38).getNumericCellValue());
             tempPurchase.setiGSTPer((int)row.getCell(39).getNumericCellValue());
-            tempPurchase.setCessPer((int)row.getCell(40).getNumericCellValue());
-            tempPurchase.setCessAmt(row.getCell(41).getNumericCellValue());
-            tempPurchase.setTotal(row.getCell(42).getNumericCellValue());
-            tempPurchase.setPost(String.valueOf(row.getCell(43).getNumericCellValue()));
+            tempPurchase.setCessPer((int)row.getCell(41).getNumericCellValue());
+            tempPurchase.setCessAmt(row.getCell(42).getNumericCellValue());
+            tempPurchase.setTotal(row.getCell(43).getNumericCellValue());
+            tempPurchase.setPost(String.valueOf(row.getCell(44).getNumericCellValue()));
             tempPurchase.setStoreId(storeId);
 
             purchaseArrayList.add(tempPurchase);

@@ -42,7 +42,7 @@ public class StockHandler {
                     throw new APIException(String.format("Not Enough stock for Mf Name %s, item name %s, Batch %s Supplier Name %s", stockUpdateRequest.getMfName(), stockUpdateRequest.getItemName(), stockUpdateRequest.getBatch(), stockUpdateRequest.getSupplierName()));
                 }
 
-                currBalPackQuantity = curBalQuantity / stockUpdateRequest.getQtyPerBox();
+                currBalPackQuantity = Math.floor(curBalQuantity / stockUpdateRequest.getQtyPerBox());
                 currBalLooseQuantity = curBalQuantity - (currBalPackQuantity * stockUpdateRequest.getQtyPerBox());
 
                 Double stockValueMrp = currBalPackQuantity * stockUpdateRequest.getMrpPack() + currBalLooseQuantity * (stockUpdateRequest.getMrpPack() / stockUpdateRequest.getQtyPerBox());
